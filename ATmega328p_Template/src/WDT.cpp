@@ -1,6 +1,6 @@
 #include "WDT.h"
 
-#if WDT_SLEEP_INTERRUPT_CONFIG
+#if WDT_INTERRUPT_CONFIG
 
 volatile uint8_t wdt_counter;   // Volatile is preferable when modified in WDT
 

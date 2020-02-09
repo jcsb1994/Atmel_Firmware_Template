@@ -1,56 +1,17 @@
-#include "app_config.h"
-
-/*##################################################
-            MACROS
-##################################################*/
-
-// Debounce algorithm macros
-#define DEBOUNCE_TIME 0.5
-#define SAMPLE_FREQUENCY 10
-#define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY)
-
-/*##################################################
-            DECLARATION
-##################################################*/
-
-class tact
-{
-public:
-    tact(int assigned_pin); // Constructor
-    void debounce();
-    void poll();
-
-private:
-    int pin;
-
-    // Debounce static variables
-    volatile unsigned int input; // Current state of the tact switch
-    volatile unsigned int integrator;
-    volatile bool btnOutput; // Output of the algorithm
-    volatile bool lastOutput;
-
-    volatile unsigned int tact_is_pressed;    // Keeps track of which button is pressed during poll for long presses and others NVM!!
-    volatile bool long_press_effect_flag;     // Flags when a long press was executed
-    volatile unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
-};
-
-/*##################################################
-            DEFINITIONS
-##################################################*/
-
-//volatile unsigned int tact::which_tact_is_pressed= 0; // Define it outside of the class declaration too.. Should keep the same value between all tact instances?
-//volatile bool tact::long_press_effect_flag = 0; //storage classes like static cannot be declared during definition, just a point to remember
+#include <tact.h>
 
 tact::tact(int assigned_pin)
 {
+#if !TACT_INPUT_SHIFT_REG
     pin = assigned_pin; // Associate the pin to the private pin in the class
+    pinMode(pin, INPUT);
+#endif
 }
 
 void tact::debounce()
 {
     input = digitalRead(pin);
 
-    //STEP 1
     if (input == 0)
     {
         if (integrator > 0)
@@ -59,25 +20,24 @@ void tact::debounce()
     else if (integrator < MAXIMUM)
         integrator++;
 
-    //STEP 2
     if (integrator == 0)
         btnOutput = 0;
     else if (integrator >= MAXIMUM)
     {
-        integrator = MAXIMUM; // defensive code if integrator got corrupted
+        integrator = MAXIMUM; // Defensive code if integrator got corrupted
         btnOutput = 1;
     }
 }
 
-void tact::poll()
+short tact::poll()
 {
-
-    /***************************************************************************
-  * Option 1: The button "pin" was just pressed.
-  * If it was LOW and now HIGH (active HIGH), action is activated and
-  * refresh flag is set to refresh the screen. The semaphore value is set
-  * to the current polled button.
-  ***************************************************************************/
+    short state;
+/***************************************************************************
+* Option 1: The button "pin" was just pressed.
+* If it was LOW and now HIGH (active HIGH), action is activated and
+* refresh flag is set to refresh the screen. The semaphore value is set
+* to the current polled button.
+***************************************************************************/
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
     if (btnOutput && !lastOutput)
     {
@@ -86,11 +46,14 @@ void tact::poll()
     {
 #endif
 
-        tact_is_pressed++; //button being polled is now flagged as pressed
+        tact_is_pressed++;
+
+#if !WDT_INTERRUPT_CONFIG
+        last_press_millis = millis();
+#endif
 
 #if SHORT_BUTTON_PRESS_CONFIG == 1
-        //add a pressed effect here:
-        shortSwitchActions(pin);
+        state = SHORT_EFFECT_REQUIRED;
 #endif
     }
 
@@ -115,16 +78,15 @@ void tact::poll()
         if (tact_is_pressed)
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
-            if (!long_press_effect_flag) //if there was no long press. If there was, releasing will not trigger another effect
+            if (!long_effect_done) //if there was no long press. If there was, releasing will not trigger another effect
 #endif
-                //add a release effect here:
-                releaseSwitchActions(pin);
+                state = RELEASE_EFFECT_REQUIRED;
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
             else //if long press effect occured
             {
-                long_press_effect_flag = 0;
+                long_effect_done = 0;
             }
 #endif
 
@@ -138,24 +100,30 @@ void tact::poll()
   ***************************************************************************/
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
-    else if (tact_is_pressed && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
+
+#if WDT_INTERRUPT_CONFIG
+    else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
     {
-
-        longSwitchActions(pin);
-
         long_press_counter = 0; // Stop counting, flag up
-        long_press_effect_flag++;
+#else
+    else if (tact_is_pressed && !long_effect_done && last_press_millis - millis() >= LONG_PRESS_DELAY)
+    {
+#endif
+#endif
+        state = LONG_EFFECT_REQUIRED;
+        long_effect_done++;
     }
 
     /***************************************************************************
-  * Option 4: counting until long effect. 
+  * Option 4: WDT counting until long effect. 
   * This condition needs to be after "long effect reached" as it is true
   * even when the long press is ready to trigger.
   ***************************************************************************/
 
-    else if (tact_is_pressed && !long_press_effect_flag)
+#if WDT_INTERRUPT_CONFIG
+    else if (tact_is_pressed && !long_effect_done)
     {
-        long_press_counter++;   // Keep counting, no flag yet
+        long_press_counter++; // Might skip ISRs if period too small. tweak period in consequence.
     }
 #endif
 
@@ -163,5 +131,9 @@ void tact::poll()
   * Mark the pressed button as read to prevent multiple readings
   ***************************************************************************/
 
-    lastOutput = btnOutput; //next time, wont trigger again
+    lastOutput = btnOutput;
+    return state;
 }
+
+//vectors and lists
+//pointerus de fonctions
