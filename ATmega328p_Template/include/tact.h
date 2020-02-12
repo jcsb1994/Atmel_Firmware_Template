@@ -18,15 +18,27 @@
             DECLARATION
 ##################################################*/
 
+extern int interface[];
+
 class tact
 {
 public:
     tact(int assigned_pin); // Constructor
+    
     void debounce();
-    short poll();
+    short poll(bool debounce_flag);
+    void activate();
+    void setFunctions(void short_press_function(), void release_press_function(), void long_press_function());
+
+    short state;
 
 private:
     int pin;
+
+    // Pointers to tact effect functions
+    void (*short_ptr)();
+    void (*release_ptr)();
+    void (*long_ptr)();
 
     // Debounce static variables
     volatile unsigned int input; // Current state of the tact switch

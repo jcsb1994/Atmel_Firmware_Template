@@ -1,20 +1,28 @@
 #include "app_config.h"
 #include <Arduino.h>
 
-void setup() {
+void setup()
+{
   // put your setup code here, to run once:
 }
 
-void loop() {
+void loop()
+{
   // put your main code here, to run repeatedly:
   tact upPin(2);
   upPin.debounce();
-  interface[] = upPin.poll();
+  //upPin.state = upPin.poll;  // change for auto set state. then, switch case for state if (upPin.state)
+  upPin.poll(DEBOUNCED); // Changes tact state automatically
+  
+  if(upPin.state)
+    upPin.activate();
+/*
+Below should be changed: place the switch in a separate member that points to tact effect functions
+*/
 
 
 
-
-/* how to create a class that creates custom functions for every object created?
+  /* how to create a class that creates custom functions for every object created?
 I have a class named tact that operates mechanical buttons for embedded applications
 I need different interface fonctions to be created for each tact obect created.
 For example, if I created a power button, I would generate a function for operating long presses

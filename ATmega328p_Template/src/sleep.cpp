@@ -1,6 +1,6 @@
     #include "sleep.h"
     
-void leep_setup() {  
+void sleep_setup() {  
     
     //ADCSRA |= (1 << 7); // Disable ADC - don't forget to flip back after waking up if using ADC in your application
     // To turn it back ON: ADCSRA &= ~(1 << 7);

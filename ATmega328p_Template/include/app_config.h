@@ -17,19 +17,18 @@
  ***will now be declared in main
  ***************************************************************************/
 
-
 /***************************************************************************
  * BUTTONS (TACT SWITCHES) MACROS
  * 
  ***************************************************************************/
 
-#define BUTTON_ACTIVE_STATE_CONFIG 1    // 1 for active HIGH buttons or 0 for active low
+#define BUTTON_ACTIVE_STATE_CONFIG 1 // 1 for active HIGH buttons or 0 for active low
 
 #define SHORT_BUTTON_PRESS_CONFIG 0 // 1 to turn ON functionality for short button presses
-#define BUTTON_RELEASE_CONFIG 1 // 1 to turn ON functionality for button releases
+#define BUTTON_RELEASE_CONFIG 1     // 1 to turn ON functionality for button releases
 
-#define LONG_BUTTON_PRESS_CONFIG 1  // 1 to turn ON functionality for long button presses
-#define LONG_PRESS_DELAY 1000   // Period in milliseconds before long presses are triggered
+#define LONG_BUTTON_PRESS_CONFIG 1          // 1 to turn ON functionality for long button presses
+#define LONG_PRESS_DELAY 1000               // Period in milliseconds before long presses are triggered
 #define LONG_PRESS_COUNTER_DELAY WDT_PERIOD // 1 to turn ON functionality for long button presses
 #define ITERATIONS_TO_LONG_PRESS_TRIGGER LONG_PRESS_DELAY / LONG_PRESS_COUNTER_DELAY
 
@@ -53,9 +52,14 @@
 
 #define WDT_INTERRUPT_CONFIG 1
 
-#define WDT_PERIOD 16   // WDT period in microseconds
+#define WDT_PERIOD 16 // WDT period in microseconds
 
+/*##################################################################
+CONSTANT MACROS (DO NOT EDIT)
+##################################################################*/
 
+#define DEBOUNCED 1
+#define NOT_DEBOUNCED 0
 
 // End of File
 #endif

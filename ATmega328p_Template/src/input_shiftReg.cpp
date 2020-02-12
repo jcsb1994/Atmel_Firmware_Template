@@ -25,9 +25,9 @@ void inputShiftSnapShot()
 for(int i = 0; i < nb_of_input_shift_reg_objects; i++)
 {
     //something needs to point in order to the shift registers as loop iterates
-    data = SPI.transfer(0x00);
+    input_shift_reg::data = SPI.transfer(0x00);
 }
-
+/*
 #ifdef FIRST_INPUT_SHIFT_NAME_CONFIG
     FIRST_INPUT_SHIFT_NAME_CONFIG.data = SPI.transfer(0x00);
 #endif
@@ -43,4 +43,6 @@ for(int i = 0; i < nb_of_input_shift_reg_objects; i++)
 #ifdef FOURTH_INPUT_SHIFT_NAME_CONFIG
     FOURTH_INPUT_SHIFT_NAME_CONFIG.data = SPI.transfer(0x00);
 #endif
+
+*/
 }

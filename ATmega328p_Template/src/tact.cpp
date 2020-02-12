@@ -1,10 +1,13 @@
 #include <tact.h>
 
+int interface[] = {0};
+
 tact::tact(int assigned_pin)
 {
 #if !TACT_INPUT_SHIFT_REG
     pin = assigned_pin; // Associate the pin to the private pin in the class
     pinMode(pin, INPUT);
+    //increase the size of interface by 1
 #endif
 }
 
@@ -29,9 +32,11 @@ void tact::debounce()
     }
 }
 
-short tact::poll()
+short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 {
-    short state;
+
+    if (debounce_flag == NOT_DEBOUNCED)
+        btnOutput = digitalRead(tact::pin);
 /***************************************************************************
 * Option 1: The button "pin" was just pressed.
 * If it was LOW and now HIGH (active HIGH), action is activated and
@@ -53,7 +58,7 @@ short tact::poll()
 #endif
 
 #if SHORT_BUTTON_PRESS_CONFIG == 1
-        state = SHORT_EFFECT_REQUIRED;
+        tact::state = SHORT_EFFECT_REQUIRED;
 #endif
     }
 
@@ -80,7 +85,7 @@ short tact::poll()
 #if LONG_BUTTON_PRESS_CONFIG == 1
             if (!long_effect_done) //if there was no long press. If there was, releasing will not trigger another effect
 #endif
-                state = RELEASE_EFFECT_REQUIRED;
+                tact::state = RELEASE_EFFECT_REQUIRED;
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
@@ -110,7 +115,7 @@ short tact::poll()
     {
 #endif
 #endif
-        state = LONG_EFFECT_REQUIRED;
+        tact::state = LONG_EFFECT_REQUIRED;
         long_effect_done++;
     }
 
@@ -132,8 +137,37 @@ short tact::poll()
   ***************************************************************************/
 
     lastOutput = btnOutput;
-    return state;
+    //return state;
 }
 
 //vectors and lists
 //pointerus de fonctions
+
+void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
+{
+    void (*short_ptr)() = short_press_function;
+    void (*release_ptr)() = release_press_function;
+    void (*long_ptr)() = long_press_function;
+}
+
+void tact::activate()
+{
+    switch (tact::state)
+    {
+    case SHORT_EFFECT_REQUIRED:
+        short_ptr();
+        break;
+
+    case RELEASE_EFFECT_REQUIRED:
+        release_ptr();
+        break;
+
+    case LONG_EFFECT_REQUIRED:
+        long_ptr();
+        break;
+
+    default:
+        break;
+    }
+    tact::state = 0;
+}
