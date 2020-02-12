@@ -1,19 +1,26 @@
 #include <tact.h>
 
-int interface[] = {0};
-
-tact::tact(int assigned_pin)
+void SPI_init()
 {
-#if !TACT_INPUT_SHIFT_REG
-    pin = assigned_pin; // Associate the pin to the private pin in the class
+    SPI.setClockDivider(SPI_CLOCK_DIV128);
+    SPI.setDataMode(SPI_MODE0);
+    SPI.setBitOrder(MSBFIRST);
+    SPI.begin();
+}
+
+
+tact::tact(int assigned_pin, input_shift_register shift = {0,0,0})
+{
+if (!shift.ID)
+    pin = assigned_pin, // Associate the pin to the private pin in the class
     pinMode(pin, INPUT);
-    //increase the size of interface by 1
-#endif
+
 }
 
 void tact::debounce()
 {
     input = digitalRead(pin);
+    // or if switch input = (button_shift.data & (1 << pin)) >> pin;
 
     if (input == 0)
     {
@@ -53,7 +60,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
         tact_is_pressed++;
 
-#if !WDT_INTERRUPT_CONFIG
+#if !TACT_TIMER_INTERRUPT_CONFIG
         last_press_millis = millis();
 #endif
 
@@ -78,14 +85,15 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     {
 #endif
 
-#if BUTTON_RELEASE_CONFIG == 1
+#if BUTTON_RELEASE_CONFIG
 
-        if (tact_is_pressed)
+        if(tact_is_pressed) {
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
             if (!long_effect_done) //if there was no long press. If there was, releasing will not trigger another effect
 #endif
                 tact::state = RELEASE_EFFECT_REQUIRED;
+        }
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
@@ -106,7 +114,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
 
-#if WDT_INTERRUPT_CONFIG
+#if TACT_TIMER_INTERRUPT_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
     {
         long_press_counter = 0; // Stop counting, flag up
@@ -125,7 +133,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   * even when the long press is ready to trigger.
   ***************************************************************************/
 
-#if WDT_INTERRUPT_CONFIG
+#if TACT_TIMER_INTERRUPT_CONFIG
     else if (tact_is_pressed && !long_effect_done)
     {
         long_press_counter++; // Might skip ISRs if period too small. tweak period in consequence.
@@ -137,7 +145,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   ***************************************************************************/
 
     lastOutput = btnOutput;
-    //return state;
+    return tact::state;
 }
 
 //vectors and lists

@@ -16,39 +16,8 @@
 #define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
 #define LOAD_PIN_PORT_STATE_REG PORTD
 
-class input_shift_reg
-{
-public:
-    input_shift_reg();
-    int shift_ID;
-    int data;
-    int *ptr_to_data;
-};
 
-/***************************************************************************
- * shift_reg struct
- ***************************************************************************/
-/*
-typedef struct input_shift_register
-{
-    uint8_t data;
-    uint8_t *ptr_to_data;
 
-} input_shift;
-*/
-/***************************************************************************
- * 
- * input shift register macros and input_shift instances
- * 
- ***************************************************************************/
-
-#define NUMBER_OF_INPUT_SHIFT_REGISTERS 2
-#define FIRST_INPUT_SHIFT_NAME_CONFIG button_shift
-#define SECOND_INPUT_SHIFT_NAME_CONFIG hall_shift
-/*
-extern input_shift FIRST_INPUT_SHIFT_NAME_CONFIG;
-extern input_shift SECOND_INPUT_SHIFT_NAME_CONFIG;
-*/
 /***************************************************************************
  * SPI_init function
  * 

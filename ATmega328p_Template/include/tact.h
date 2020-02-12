@@ -1,4 +1,7 @@
 #include "app_config.h"
+#ifndef TACT_H
+#define TACT_H
+
 
 /*##################################################
             MACROS
@@ -18,12 +21,22 @@
             DECLARATION
 ##################################################*/
 
-extern int interface[];
+void SPI_init();
+
+struct input_shift_register
+{
+    int ID;
+    uint8_t data;
+    uint8_t *ptr_to_data;
+
+};
+
 
 class tact
 {
 public:
-    tact(int assigned_pin); // Constructor
+
+    tact(int assigned_pin, input_shift_register shift = {0,0,0}); // Constructor
     
     void debounce();
     short poll(bool debounce_flag);
@@ -36,9 +49,9 @@ private:
     int pin;
 
     // Pointers to tact effect functions
-    void (*short_ptr)();
-    void (*release_ptr)();
-    void (*long_ptr)();
+    void (*short_ptr)(void);
+    void (*release_ptr)(void);
+    void (*long_ptr)(void);
 
     // Debounce static variables
     volatile unsigned int input; // Current state of the tact switch
@@ -48,12 +61,16 @@ private:
 
     volatile unsigned int tact_is_pressed; // Keeps track of which button is pressed during poll for long presses and others NVM!!
 
-#if LONG_BUTTON_PRESS_CONFIG
+//#if LONG_BUTTON_PRESS_CONFIG
     volatile bool long_effect_done; // Flags when a long press was executed
-#if WDT_INTERRUPT_CONFIG == 1 // If WDT is ON, whether for sleep or not, can be used to count time
+//#if TACT_TIMER_INTERRUPT_CONFIG == WDT_USED // If a timer is checking tact, can be used to count time
     volatile unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
-#else
+
+//#else
     volatile unsigned long last_press_millis;
-#endif
-#endif
+//#endif
+//#endif
 };
+
+
+#endif // Header guard
