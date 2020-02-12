@@ -153,9 +153,9 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
 {
-    void (*short_ptr)() = short_press_function;
-    void (*release_ptr)() = release_press_function;
-    void (*long_ptr)() = long_press_function;
+    short_ptr = short_press_function;
+    release_ptr = release_press_function;
+    long_ptr = long_press_function;
 }
 
 void tact::activate()

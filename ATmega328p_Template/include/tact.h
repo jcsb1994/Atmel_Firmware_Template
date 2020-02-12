@@ -21,6 +21,11 @@
             DECLARATION
 ##################################################*/
 
+void up_short(void);
+void up_release(void);
+void up_long(void);
+
+
 void SPI_init();
 
 struct input_shift_register
@@ -41,7 +46,7 @@ public:
     void debounce();
     short poll(bool debounce_flag);
     void activate();
-    void setFunctions(void short_press_function(), void release_press_function(), void long_press_function());
+    void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
 
     short state;
 

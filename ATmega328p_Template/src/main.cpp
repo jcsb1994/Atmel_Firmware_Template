@@ -1,7 +1,7 @@
 #include "app_config.h"
 #include <Arduino.h>
 
-void up_short(void)
+void up_short()
 {
 
 }
@@ -14,19 +14,21 @@ void up_long()
   
 }
 
+
+  input_shift_register buttons_shift = {1};
+ 
+  tact upPin(2);
+  tact selectPin(0, buttons_shift);
+
 void setup()
 {
-  // put your setup code here, to run once:
+  Serial.println(buttons_shift.ID); // TEST if it worked
+
+  upPin.setFunctions(up_short(), up_release(), up_long());
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-  input_shift_register buttons_shift = {1};
-  Serial.println(buttons_shift.ID); // TEST if it worked
-  tact upPin(2);
-  tact selectPin(0, buttons_shift);
-  upPin.setFunctions(up_short(), up_release(), up_long());
   upPin.debounce();
   //upPin.state = upPin.poll;  // change for auto set state. then, switch case for state if (upPin.state)
   upPin.poll(DEBOUNCED); // Changes tact state automatically
