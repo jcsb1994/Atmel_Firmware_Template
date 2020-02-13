@@ -46,6 +46,7 @@ public:
     void debounce();
     short poll(bool debounce_flag);
     void activate();
+    void timerCount();
     void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
 
     short state;
@@ -53,6 +54,7 @@ public:
 private:
     int pin;
 
+    input_shift_register input_shift;
     // Pointers to tact effect functions
     void (*short_ptr)(void);
     void (*release_ptr)(void);

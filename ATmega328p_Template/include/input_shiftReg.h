@@ -5,16 +5,7 @@
 #include <stdint.h>
 #include <SPI.h>
 
-/***************************************************************************
- * 74HC165 PINS
- * MISO   -   pin 12 to Q7 of last shift register
- * SCK    -   pin 13 to CP on registers
- * LOAD   -   digital pin (2) to PL on registers. Needs to be set as output.
- ***************************************************************************/
 
-#define loadPin 2
-#define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
-#define LOAD_PIN_PORT_STATE_REG PORTD
 
 
 

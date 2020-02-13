@@ -10,19 +10,32 @@ void SPI_init()
 
 tact::tact(int assigned_pin, input_shift_register shift = {0, 0, 0})
 {
-    if (!shift.ID)
-        pin = assigned_pin, // Associate the pin to the private pin in the class
+    
+        pin = assigned_pin; // Associate the pin to the private pin in the class
+        if (!shift.ID)
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
             pinMode(pin, INPUT);
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
             pinMode(pin, INPUT_PULLUP);
 #endif
+        else tact::input_shift = shift;
 }
 
 void tact::debounce()
 {
-    input = digitalRead(pin);
-    // or if switch input = (button_shift.data & (1 << pin)) >> pin;
+    if (!input_shift.ID)
+        input = digitalRead(pin);
+    /*else 
+    {
+        PORTD &= ~(1 << loadPin);
+        delay(1);
+        PORTD ^= (1 << loadPin);
+        //for (int i = 1; i < input_shift.ID; i++)
+          //  SPI.transfer(0x00);
+      //  input_shift.data = SPI.transfer(0x00);
+        input = (input_shift.data & (1 << pin)) >> pin;
+    }*/
+    
     if (input == 0)
     {
         if (integrator > 0)
@@ -108,6 +121,8 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
     /***************************************************************************
   * Option 3: Long press effect reached
+  * (either counted in the timer with tact.timerCount) or with millis())
+  * 
   * The long_press_counter has reached a treshold time value and we are
   * polling the right button, which is pressed and marked with the semaphore.
   ***************************************************************************/
@@ -117,29 +132,17 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #if TACT_TIMER_INTERRUPT_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
     {
+        Serial.println(long_press_counter);
         long_press_counter = 0; // Stop counting, flag up
 #else
     else if (tact_is_pressed && !long_effect_done && (millis() - last_press_millis) >= LONG_PRESS_DELAY)
     {
-        Serial.println("a second");
 #endif
 #endif
         tact::state = LONG_EFFECT_REQUIRED;
         long_effect_done++;
     }
 
-    /***************************************************************************
-  * Option 4: WDT counting until long effect. 
-  * This condition needs to be after "long effect reached" as it is true
-  * even when the long press is ready to trigger.
-  ***************************************************************************/
-
-#if TACT_TIMER_INTERRUPT_CONFIG
-    else if (tact_is_pressed && !long_effect_done)
-    {
-        long_press_counter++; // Might skip ISRs if period too small. tweak period in consequence.
-    }
-#endif
 
     /***************************************************************************
   * Mark the pressed button as read to prevent multiple readings
@@ -149,8 +152,6 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     return tact::state;
 }
 
-//vectors and lists
-//pointerus de fonctions
 
 void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
 {
@@ -179,4 +180,11 @@ void tact::activate()
         break;
     }
     tact::state = 0;
+}
+
+void tact::timerCount() {
+    if (tact_is_pressed && !long_effect_done)
+        long_press_counter++;
+    else long_press_counter = 0;
+    Serial.println(long_press_counter);
 }

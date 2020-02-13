@@ -6,7 +6,6 @@
 void up_short()
 {
   digitalWrite(ledPin, HIGH);
-
 }
 void up_release()
 {
@@ -16,43 +15,70 @@ void up_long()
 {
   for (int i = 0; i < 6; i++)
     DDRD ^= (1 << ledPin),
-    delay(100);
+        delay(100);
 }
 
 
-  input_shift_register buttons_shift = {1};
- 
-  tact upPin(2);
-  tact selectPin(0, buttons_shift);
+void s_short()
+{
+  digitalWrite(ledPin, HIGH);
+}
+void s_release()
+{
+  digitalWrite(ledPin, LOW);
+}
+void s_long()
+{
+  for (int i = 0; i < 6; i++)
+    DDRD ^= (1 << ledPin),
+        delay(100);
+}
+
+
+
+input_shift_register buttons_shift = {1};
+
+tact upPin(2);
+tact selectPin(0, buttons_shift);
+
+
+ISR(WDT_vect)
+{
+    upPin.timerCount();
+    selectPin.timerCount();
+}
 
 void setup()
 {
 
   Serial.begin(9600);
+
   pinMode(ledPin, OUTPUT);
-  
+
   upPin.setFunctions(up_short, up_release, up_long);
+  selectPin.setFunctions(s_short, s_release, s_long);
+
+  WDT_setup();
 }
 
 void loop()
 {
-  
+
   upPin.debounce();
+  selectPin.debounce();
   //upPin.state = upPin.poll;  // change for auto set state. then, switch case for state if (upPin.state)
   upPin.poll(DEBOUNCED); // Changes tact state automatically
-  
-  if(upPin.state)
-      //Serial.println("activated!"),
-      Serial.println(upPin.state),
+
+
+  if (upPin.state)
     upPin.activate();
+
 }
 /*
 Below should be changed: place the switch in a separate member that points to tact effect functions
 */
 
-
-
-  /* how to create a class that creates custom functions for every object created?
+/* how to create a class that creates custom functions for every object created?
 I have a class named tact that operates mechanical buttons for embedded applications
 I need different interface fonctions to be created for each tact obect created.
 For example, if I created a power button, I would generate a function for operating long presses

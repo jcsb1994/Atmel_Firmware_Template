@@ -1,8 +1,8 @@
 #include "WDT.h"
 
-#if TACT_TIMER_INTERRUPT_CONFIG
+#if WDT_CONFIG
 
-volatile uint8_t wdt_counter;   // Volatile is preferable when modified in WDT
+volatile uint8_t wdt_counter; // Volatile is preferable when modified in WDT
 
 /*##################################################
             FUNCTIONS
@@ -11,26 +11,25 @@ volatile uint8_t wdt_counter;   // Volatile is preferable when modified in WDT
 void WDT_setup()
 {
     //WATCHDOG TIMER SETUP
-    
-    WDTCSR = (24);      // Change enable and WDE - also resets
+
+    WDTCSR = (24); // Change enable and WDE - also resets
 
     //prescalers only - get rid of the WDE and WDCE bit.
-    
-    #if WDT_PERIOD == 125
-    WDTCSR = (3);        // 0,125 sec
-    #elif WDT_PERIOD == 32
-    WDTCSR = (1);       //32 ms
-    #elif WDT_PERIOD == 16
-    WDTCSR = (0);  
-    #endif
+#if WDT_PERIOD == 125
+    WDTCSR = (3); // 0,125 sec
+#endif
+
+#if WDT_PERIOD == 32
+    WDTCSR = (1); //32 ms
+#endif
+
+#if WDT_PERIOD == 16
+WDTCSR = (0);
+#endif
 
     WDTCSR |= (1 << 6); //enable interrupt mode - WDT as an interrupt is useful to wake up from sleep
-
 }
 
-ISR(WDT_vect)
-{
-    wdt_counter++;
-}
+
 
 #endif
