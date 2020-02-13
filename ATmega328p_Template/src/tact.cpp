@@ -8,20 +8,21 @@ void SPI_init()
     SPI.begin();
 }
 
-
-tact::tact(int assigned_pin, input_shift_register shift = {0,0,0})
+tact::tact(int assigned_pin, input_shift_register shift = {0, 0, 0})
 {
-if (!shift.ID)
-    pin = assigned_pin, // Associate the pin to the private pin in the class
-    pinMode(pin, INPUT);
-
+    if (!shift.ID)
+        pin = assigned_pin, // Associate the pin to the private pin in the class
+#if BUTTON_ACTIVE_STATE_CONFIG == 1
+            pinMode(pin, INPUT);
+#elif BUTTON_ACTIVE_STATE_CONFIG == 0
+            pinMode(pin, INPUT_PULLUP);
+#endif
 }
 
 void tact::debounce()
 {
     input = digitalRead(pin);
     // or if switch input = (button_shift.data & (1 << pin)) >> pin;
-
     if (input == 0)
     {
         if (integrator > 0)
@@ -62,6 +63,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 #if !TACT_TIMER_INTERRUPT_CONFIG
         last_press_millis = millis();
+        Serial.println(last_press_millis);
 #endif
 
 #if SHORT_BUTTON_PRESS_CONFIG == 1
@@ -87,9 +89,10 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 #if BUTTON_RELEASE_CONFIG
 
-        if(tact_is_pressed) {
+        if (tact_is_pressed)
+        {
 
-#if LONG_BUTTON_PRESS_CONFIG == 1
+#if LONG_BUTTON_PRESS_CONFIG == 1 && !RELEASE_AFTER_LONG_EFFECT_CONFIG
             if (!long_effect_done) //if there was no long press. If there was, releasing will not trigger another effect
 #endif
                 tact::state = RELEASE_EFFECT_REQUIRED;
@@ -97,10 +100,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
-            else //if long press effect occured
-            {
-                long_effect_done = 0;
-            }
+        long_effect_done = 0;
 #endif
 
         tact_is_pressed = 0;
@@ -119,8 +119,9 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     {
         long_press_counter = 0; // Stop counting, flag up
 #else
-    else if (tact_is_pressed && !long_effect_done && last_press_millis - millis() >= LONG_PRESS_DELAY)
+    else if (tact_is_pressed && !long_effect_done && (millis() - last_press_millis) >= LONG_PRESS_DELAY)
     {
+        Serial.println("a second");
 #endif
 #endif
         tact::state = LONG_EFFECT_REQUIRED;

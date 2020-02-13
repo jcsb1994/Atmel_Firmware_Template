@@ -1,17 +1,22 @@
 #include "app_config.h"
 #include <Arduino.h>
 
+#define ledPin 7
+
 void up_short()
 {
+  digitalWrite(ledPin, HIGH);
 
 }
 void up_release()
 {
-  
+  digitalWrite(ledPin, LOW);
 }
 void up_long()
 {
-  
+  for (int i = 0; i < 6; i++)
+    DDRD ^= (1 << ledPin),
+    delay(100);
 }
 
 
@@ -22,18 +27,23 @@ void up_long()
 
 void setup()
 {
-  Serial.println(buttons_shift.ID); // TEST if it worked
 
-  upPin.setFunctions(up_short(), up_release(), up_long());
+  Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+  
+  upPin.setFunctions(up_short, up_release, up_long);
 }
 
 void loop()
 {
+  
   upPin.debounce();
   //upPin.state = upPin.poll;  // change for auto set state. then, switch case for state if (upPin.state)
   upPin.poll(DEBOUNCED); // Changes tact state automatically
   
   if(upPin.state)
+      //Serial.println("activated!"),
+      Serial.println(upPin.state),
     upPin.activate();
 }
 /*

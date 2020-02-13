@@ -27,14 +27,14 @@
 
 #define BUTTON_ACTIVE_STATE_CONFIG 0 // 1 for active HIGH buttons or 0 for active low
 
-#define SHORT_BUTTON_PRESS_CONFIG 0 // 1 to turn ON functionality for short button presses
+#define SHORT_BUTTON_PRESS_CONFIG 1 // 1 to turn ON functionality for short button presses
 #define BUTTON_RELEASE_CONFIG 1     // 1 to turn ON functionality for button releases
 
-
+#define RELEASE_AFTER_LONG_EFFECT_CONFIG 1  // 1 will trigger a release effect even after long press effects occured
 #define LONG_BUTTON_PRESS_CONFIG 1          // 1 to turn ON functionality for long button presses
 #define LONG_PRESS_DELAY 1000               // Period in milliseconds before long presses are triggered
 
-#define TACT_TIMER_INTERRUPT_CONFIG WDT_USED     // Set up if there is an ISR managing tacts
+#define TACT_TIMER_INTERRUPT_CONFIG 0    // Set up if there is an ISR managing tacts WDT_USED, etc
 
 #define ITERATIONS_TO_LONG_PRESS_TRIGGER LONG_PRESS_DELAY / TIMER_PERIOD
 
@@ -48,11 +48,10 @@
 #define TACT_INPUT_SHIFT_REG 0
 
 /***************************************************************************
- * INTERRUPT MACROS
-
  * WDT period
  * acceptable values in ms:
  * 16, 32, 64, 125, 250, 500, 1000, 2000, 4000 and 8000
+ * leave any value if unused, do not undefine
  ***************************************************************************/
 
 #define TIMER_PERIOD 16 // WDT period in microseconds, or from other timer chosen
