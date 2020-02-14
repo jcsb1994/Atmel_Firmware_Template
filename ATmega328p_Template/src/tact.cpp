@@ -1,40 +1,57 @@
 #include <tact.h>
 
-void SPI_init()
+void input_shift_reg_SPI_init()
 {
+    pinMode(loadPin, OUTPUT);
     SPI.setClockDivider(SPI_CLOCK_DIV128);
     SPI.setDataMode(SPI_MODE0);
     SPI.setBitOrder(MSBFIRST);
     SPI.begin();
 }
 
-tact::tact(int assigned_pin, input_shift_register shift = {0, 0, 0})
+void shift_reg_snapshot() {
+        PORTD &= ~(1 << loadPin);
+        delay(1);
+        PORTD ^= (1 << loadPin);
+}
+
+int transfer_shift_reg_data() 
 {
-    
+int data = SPI.transfer(0x00);
+return data;
+
+}
+
+        
+
+tact::tact(int assigned_pin, input_shift_register shift)
+{
+
         pin = assigned_pin; // Associate the pin to the private pin in the class
-        if (!shift.ID)
+        if (!shift.not_used)
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
             pinMode(pin, INPUT);
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
             pinMode(pin, INPUT_PULLUP);
+
 #endif
         else tact::input_shift = shift;
+
 }
 
 void tact::debounce()
 {
-    if (!input_shift.ID)
+    
+    if (!input_shift.not_used)
         input = digitalRead(pin);
-    /*else 
-    {
-        PORTD &= ~(1 << loadPin);
-        delay(1);
-        PORTD ^= (1 << loadPin);
-        //for (int i = 1; i < input_shift.ID; i++)
-          //  SPI.transfer(0x00);
-      //  input_shift.data = SPI.transfer(0x00);
-        input = (input_shift.data & (1 << pin)) >> pin;
-    }*/
+    else 
+    #if BUTTON_ACTIVE_STATE_CONFIG == 1
+            input = (input_shift.data & (1 << pin)) >> pin;
+#elif BUTTON_ACTIVE_STATE_CONFIG == 0
+    input = !((input_shift.data & (1 << pin)) >> pin);
+    Serial.print("ptr: ");
+    Serial.println(input_shift.data);
+ #endif
     
     if (input == 0)
     {
@@ -162,6 +179,8 @@ void tact::setFunctions(void short_press_function(), void release_press_function
 
 void tact::activate()
 {
+    if (state)
+    {
     switch (tact::state)
     {
     case SHORT_EFFECT_REQUIRED:
@@ -180,11 +199,10 @@ void tact::activate()
         break;
     }
     tact::state = 0;
+    }
 }
 
 void tact::timerCount() {
     if (tact_is_pressed && !long_effect_done)
         long_press_counter++;
-    else long_press_counter = 0;
-    Serial.println(long_press_counter);
 }

@@ -21,27 +21,30 @@
             DECLARATION
 ##################################################*/
 
-void up_short(void);
-void up_release(void);
-void up_long(void);
-
-
-void SPI_init();
 
 struct input_shift_register
 {
-    int ID;
-    uint8_t data;
-    uint8_t *ptr_to_data;
+    bool not_used;
+    int data;
+    int *ptr_to_data;
 
 };
+
+void input_shift_reg_SPI_init();
+
+void shift_reg_snapshot();
+
+int transfer_shift_reg_data();
+
+
+
 
 
 class tact
 {
 public:
 
-    tact(int assigned_pin, input_shift_register shift = {0,0,0}); // Constructor
+    tact(int assigned_pin, input_shift_register shift); // Constructor
     
     void debounce();
     short poll(bool debounce_flag);
