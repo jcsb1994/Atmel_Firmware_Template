@@ -35,11 +35,15 @@ void s_long()
 }
 
 
-
+/*
+corriger: tact debounce et poll les d/buts qui traitent le struct ne sont pas bons pcq le struct est mal passe en argument.. 
+*/
 input_shift_register buttons_shift = {1};
+input_shift_register *ptr = &buttons_shift;
 
-tact upPin(2);
-tact selectPin(0, buttons_shift);
+tact upPin(2, *ptr);
+tact selectPin(0, *ptr);
+
 
 
 ISR(WDT_vect)
@@ -58,20 +62,31 @@ void setup()
   upPin.setFunctions(up_short, up_release, up_long);
   selectPin.setFunctions(s_short, s_release, s_long);
 
+  input_shift_reg_SPI_init();
   WDT_setup();
+
 }
 
 void loop()
 {
 
+
+shift_reg_snapshot();
+//Serial.println(8880+buttons_shift.data);
+
+buttons_shift.data = transfer_shift_reg_data();
+Serial.print("mains: ");
+Serial.println(buttons_shift.data);
+
   upPin.debounce();
   selectPin.debounce();
   //upPin.state = upPin.poll;  // change for auto set state. then, switch case for state if (upPin.state)
   upPin.poll(DEBOUNCED); // Changes tact state automatically
+  selectPin.poll(DEBOUNCED);
 
-
-  if (upPin.state)
+  
     upPin.activate();
+    selectPin.activate();
 
 }
 /*
