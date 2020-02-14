@@ -18,7 +18,6 @@ void up_long()
         delay(100);
 }
 
-
 void s_short()
 {
   digitalWrite(ledPin, HIGH);
@@ -34,22 +33,19 @@ void s_long()
         delay(100);
 }
 
-
 /*
 corriger: tact debounce et poll les d/buts qui traitent le struct ne sont pas bons pcq le struct est mal passe en argument.. 
 */
-input_shift_register buttons_shift = {1};
+input_shift_register buttons_shift;
 input_shift_register *ptr = &buttons_shift;
 
-tact upPin(2, *ptr);
-tact selectPin(0, *ptr);
-
-
+tact upPin(2);
+tact selectPin(0, buttons_shift);
 
 ISR(WDT_vect)
 {
-    upPin.timerCount();
-    selectPin.timerCount();
+  upPin.timerCount();
+  selectPin.timerCount();
 }
 
 void setup()
@@ -64,42 +60,22 @@ void setup()
 
   input_shift_reg_SPI_init();
   WDT_setup();
-
 }
 
 void loop()
 {
 
+  shift_reg_snapshot();
 
-shift_reg_snapshot();
-//Serial.println(8880+buttons_shift.data);
-
-buttons_shift.data = transfer_shift_reg_data();
-Serial.print("mains: ");
-Serial.println(buttons_shift.data);
+  buttons_shift.data = transfer_shift_reg_data();
 
   upPin.debounce();
   selectPin.debounce();
-  //upPin.state = upPin.poll;  // change for auto set state. then, switch case for state if (upPin.state)
-  upPin.poll(DEBOUNCED); // Changes tact state automatically
+
+  upPin.poll(DEBOUNCED); 
   selectPin.poll(DEBOUNCED);
 
-  
-    upPin.activate();
-    selectPin.activate();
+  upPin.activate();
+  selectPin.activate();
 
 }
-/*
-Below should be changed: place the switch in a separate member that points to tact effect functions
-*/
-
-/* how to create a class that creates custom functions for every object created?
-I have a class named tact that operates mechanical buttons for embedded applications
-I need different interface fonctions to be created for each tact obect created.
-For example, if I created a power button, I would generate a function for operating long presses
-for this button, which would shut it down, and another for short presses, which would reset it for example
-How could I create such a function generating behaviour for my class? That means that if I decided to
-create another object, like a enter button, two other functions would be created. I do not want to put them
-in the class directly since those functions would be differnt for every button object of course. Any Idea 
-how I could do this? thanks!
-*/

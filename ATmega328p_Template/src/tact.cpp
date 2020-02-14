@@ -9,50 +9,47 @@ void input_shift_reg_SPI_init()
     SPI.begin();
 }
 
-void shift_reg_snapshot() {
-        PORTD &= ~(1 << loadPin);
-        delay(1);
-        PORTD ^= (1 << loadPin);
+void shift_reg_snapshot()
+{
+    PORTD &= ~(1 << loadPin);
+    delay(1);
+    PORTD ^= (1 << loadPin);
 }
 
-int transfer_shift_reg_data() 
+int transfer_shift_reg_data()
 {
-int data = SPI.transfer(0x00);
-return data;
-
+    int data = SPI.transfer(0x00);
+    return data;
 }
 
-        
-
-tact::tact(int assigned_pin, input_shift_register shift)
+tact::tact(int assigned_pin)
 {
 
-        pin = assigned_pin; // Associate the pin to the private pin in the class
-        if (!shift.not_used)
+    pin = assigned_pin; // Associate the pin to the private pin in the class
+
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
-            pinMode(pin, INPUT);
+    pinMode(pin, INPUT);
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
-            pinMode(pin, INPUT_PULLUP);
-
+    pinMode(pin, INPUT_PULLUP);
 #endif
-        else tact::input_shift = shift;
+}
 
+tact::tact(int assigned_pin, input_shift_register &shift)
+{
+    pin = assigned_pin; // Associate the pin to the private pin in the class
+    input_shift_used++;
+    tact::input_shift_ptr = &shift;
 }
 
 void tact::debounce()
 {
-    
-    if (!input_shift.not_used)
+    if (input_shift_used)
+    {
+        input = (input_shift_ptr->data & (1 << pin)) >> pin;
+    }
+    else
         input = digitalRead(pin);
-    else 
-    #if BUTTON_ACTIVE_STATE_CONFIG == 1
-            input = (input_shift.data & (1 << pin)) >> pin;
-#elif BUTTON_ACTIVE_STATE_CONFIG == 0
-    input = !((input_shift.data & (1 << pin)) >> pin);
-    Serial.print("ptr: ");
-    Serial.println(input_shift.data);
- #endif
-    
+
     if (input == 0)
     {
         if (integrator > 0)
@@ -74,7 +71,13 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 {
 
     if (debounce_flag == NOT_DEBOUNCED)
-        btnOutput = digitalRead(tact::pin);
+    {
+        if (!input_shift_used)
+            btnOutput = digitalRead(tact::pin);
+        else
+            btnOutput = ((input_shift_ptr->data & (1 << pin)) >> pin);
+    }
+
 /***************************************************************************
 * Option 1: The button "pin" was just pressed.
 * If it was LOW and now HIGH (active HIGH), action is activated and
@@ -88,7 +91,6 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     if (!btnOutput && lastOutput)
     {
 #endif
-
         tact_is_pressed++;
 
 #if !TACT_TIMER_INTERRUPT_CONFIG
@@ -131,6 +133,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
         long_effect_done = 0;
+        long_press_counter = 0;
 #endif
 
         tact_is_pressed = 0;
@@ -149,7 +152,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #if TACT_TIMER_INTERRUPT_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
     {
-        Serial.println(long_press_counter);
+        //Serial.println(long_press_counter);
         long_press_counter = 0; // Stop counting, flag up
 #else
     else if (tact_is_pressed && !long_effect_done && (millis() - last_press_millis) >= LONG_PRESS_DELAY)
@@ -160,7 +163,6 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
         long_effect_done++;
     }
 
-
     /***************************************************************************
   * Mark the pressed button as read to prevent multiple readings
   ***************************************************************************/
@@ -168,7 +170,6 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     lastOutput = btnOutput;
     return tact::state;
 }
-
 
 void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
 {
@@ -181,28 +182,29 @@ void tact::activate()
 {
     if (state)
     {
-    switch (tact::state)
-    {
-    case SHORT_EFFECT_REQUIRED:
-        short_ptr();
-        break;
+        switch (tact::state)
+        {
+        case SHORT_EFFECT_REQUIRED:
+            short_ptr();
+            break;
 
-    case RELEASE_EFFECT_REQUIRED:
-        release_ptr();
-        break;
+        case RELEASE_EFFECT_REQUIRED:
+            release_ptr();
+            break;
 
-    case LONG_EFFECT_REQUIRED:
-        long_ptr();
-        break;
+        case LONG_EFFECT_REQUIRED:
+            long_ptr();
+            break;
 
-    default:
-        break;
-    }
-    tact::state = 0;
+        default:
+            break;
+        }
+        tact::state = 0;
     }
 }
 
-void tact::timerCount() {
+void tact::timerCount()
+{
     if (tact_is_pressed && !long_effect_done)
         long_press_counter++;
 }

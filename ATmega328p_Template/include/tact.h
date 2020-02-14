@@ -44,9 +44,11 @@ class tact
 {
 public:
 
-    tact(int assigned_pin, input_shift_register shift); // Constructor
+    tact(int assigned_pin); //Constructor
+    tact(int assigned_pin, input_shift_register& shift); // Overloaded constructor for tacts linked to a shift register chip
     
     void debounce();
+    //void debounce(input_shift_register& linked_shift);
     short poll(bool debounce_flag);
     void activate();
     void timerCount();
@@ -57,7 +59,9 @@ public:
 private:
     int pin;
 
-    input_shift_register input_shift;
+    bool input_shift_used;
+    //input_shift_register input_shift;
+    input_shift_register* input_shift_ptr;
     // Pointers to tact effect functions
     void (*short_ptr)(void);
     void (*release_ptr)(void);
