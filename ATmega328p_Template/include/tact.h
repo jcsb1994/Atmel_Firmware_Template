@@ -53,7 +53,6 @@ public:
     void activate();
     void timerCount();
     void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
-
     short state;
 
 private:

@@ -147,7 +147,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   * polling the right button, which is pressed and marked with the semaphore.
   ***************************************************************************/
 
-#if LONG_BUTTON_PRESS_CONFIG == 1
+#if LONG_BUTTON_PRESS_CONFIG
 
 #if TACT_TIMER_INTERRUPT_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
@@ -171,7 +171,27 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     return tact::state;
 }
 
-void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
+void tact::setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void))
+
+   /* #if SHORT_BUTTON_PRESS_CONFIG
+    void short_press_function()
+    #if  BUTTON_RELEASE_CONFIG | LONG_BUTTON_PRESS_CONFIG
+    ,
+    #endif
+    #endif
+
+    #if BUTTON_RELEASE_CONFIG
+    void release_press_function()
+    #if LONG_BUTTON_PRESS_CONFIG
+    ,
+    #endif
+    #endif
+
+    #if LONG_BUTTON_PRESS_CONFIG
+    void long_press_function()
+    #endif
+)*/
+
 {
     short_ptr = short_press_function;
     release_ptr = release_press_function;

@@ -14,7 +14,6 @@
 #include "sleep.h"
 
 
-
 /***************************************************************************
  * USED PINS ON THE ATMEGA328P
  ***will now be declared in main
@@ -38,6 +37,10 @@
 
 #define ITERATIONS_TO_LONG_PRESS_TRIGGER LONG_PRESS_DELAY / TACT_TIMER_PERIOD
 
+// Debounce algorithm macros
+#define DEBOUNCE_TIME 0.5
+#define SAMPLE_FREQUENCY 10
+#define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY)
 
 /***************************************************************************
  * 74HC165 PINS
@@ -48,7 +51,13 @@
 #define loadPin 3
 #define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
 #define LOAD_PIN_PORT_STATE_REG PORTD
-//#define TACT_INPUT_SHIFT_REG 0
+
+/***************************************************************************
+ * Sleep
+ * 
+ ***************************************************************************/
+
+#define SLEEP_CONFIG 1
 
 /***************************************************************************
  * WDT period
@@ -60,6 +69,7 @@
 #define WDT_CONFIG 1
 
 #define WDT_PERIOD 16 // WDT period in microseconds, or from other timer chosen
+
 
 /*##################################################################
 CONSTANT MACROS (DO NOT EDIT)

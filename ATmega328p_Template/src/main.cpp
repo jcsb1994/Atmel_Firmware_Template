@@ -60,6 +60,7 @@ void setup()
 
   input_shift_reg_SPI_init();
   WDT_setup();
+  sleep_setup();
 }
 
 void loop()
@@ -78,4 +79,5 @@ void loop()
   upPin.activate();
   selectPin.activate();
 
+  activate_sleep();
 }
