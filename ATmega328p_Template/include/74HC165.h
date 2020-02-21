@@ -1,23 +1,10 @@
-#ifndef INPUT_SHIFTREG_H
-#define INPUT_SHIFTREG_H
+#ifndef IN_SHI_REG_H
+#define  IN_SHI_REG_H
 
 #include "app_config.h"
-#include <stdint.h>
-#include <SPI.h>
 
 
-
-
-
-/***************************************************************************
- * SPI_init function
- * 
- * SPI protocol is initialized.
- * SPI is needed to get data from the 74hc165 shift registers
- * 
- ***************************************************************************/
-
-void SPI_init();
+void input_shift_reg_SPI_init();
 
 /***************************************************************************
  * inputShiftSnapShot function
@@ -29,6 +16,11 @@ void SPI_init();
  * 
  ***************************************************************************/
 
-void inputShiftSnapShot();
+void shift_reg_snapshot();
+
+int transfer_shift_reg_data();
+
+
+
 
 #endif

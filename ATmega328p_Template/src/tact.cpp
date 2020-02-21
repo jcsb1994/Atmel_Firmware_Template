@@ -1,26 +1,7 @@
-#include <tact.h>
+#include "tact.h"
+#include <stdarg.h>
 
-void input_shift_reg_SPI_init()
-{
-    pinMode(loadPin, OUTPUT);
-    SPI.setClockDivider(SPI_CLOCK_DIV128);
-    SPI.setDataMode(SPI_MODE0);
-    SPI.setBitOrder(MSBFIRST);
-    SPI.begin();
-}
 
-void shift_reg_snapshot()
-{
-    PORTD &= ~(1 << loadPin);
-    delay(1);
-    PORTD ^= (1 << loadPin);
-}
-
-int transfer_shift_reg_data()
-{
-    int data = SPI.transfer(0x00);
-    return data;
-}
 
 tact::tact(int assigned_pin)
 {
@@ -170,10 +151,32 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     lastOutput = btnOutput;
     return tact::state;
 }
+/*
+void tact::setFunctions(void args(), ...)
 
-void tact::setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void))
+{
 
-   /* #if SHORT_BUTTON_PRESS_CONFIG
+va_list ap;
+
+va_start(ap, args);
+
+#if SHORT_BUTTON_PRESS_CONFIG
+Serial.println(va_arg(ap, void (*)()));
+    short_ptr = va_arg(ap, void (*)());
+#endif
+#if BUTTON_RELEASE_CONFIG   
+    release_ptr = va_arg(ap, void (*)());
+#endif
+#if LONG_BUTTON_PRESS_CONFIG
+    long_ptr = va_arg(ap, void (*)());
+#endif
+
+va_end(ap);
+
+}
+*/
+
+/* #if SHORT_BUTTON_PRESS_CONFIG
     void short_press_function()
     #if  BUTTON_RELEASE_CONFIG | LONG_BUTTON_PRESS_CONFIG
     ,
@@ -192,11 +195,14 @@ void tact::setFunctions(void short_press_function(void), void release_press_func
     #endif
 )*/
 
+
+void tact::setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void))
 {
     short_ptr = short_press_function;
     release_ptr = release_press_function;
     long_ptr = long_press_function;
 }
+
 
 void tact::activate()
 {
@@ -227,4 +233,5 @@ void tact::timerCount()
 {
     if (tact_is_pressed && !long_effect_done)
         long_press_counter++;
+    
 }

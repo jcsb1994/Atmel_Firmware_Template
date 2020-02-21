@@ -1,17 +1,16 @@
-#include "app_config.h"
 #ifndef TACT_H
 #define TACT_H
 
+#include "app_config.h"
+#include "74HC165.h"
 
 /*##################################################
             MACROS
 ##################################################*/
 
-// Debounce algorithm macros
-#define DEBOUNCE_TIME 0.5
-#define SAMPLE_FREQUENCY 10
-#define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY)
-
+// Debounce macros
+#define DEBOUNCED 1
+#define NOT_DEBOUNCED 0
 // Polling macros
 #define SHORT_EFFECT_REQUIRED 1
 #define RELEASE_EFFECT_REQUIRED 2
@@ -27,18 +26,7 @@ struct input_shift_register
     bool not_used;
     int data;
     int *ptr_to_data;
-
 };
-
-void input_shift_reg_SPI_init();
-
-void shift_reg_snapshot();
-
-int transfer_shift_reg_data();
-
-
-
-
 
 class tact
 {
