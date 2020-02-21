@@ -1,6 +1,6 @@
 #include "4x20_LCD.h"
 
-//#if FOUR_LCD_CONFIG
+#if FOUR_LCD_CONFIG
 LiquidCrystal_I2C lcd(LCD_I2C_ADDR, En_pin, Rw_pin, Rs_pin, D4_pin, D5_pin, D6_pin, D7_pin);
 
 void lcd_setup() {
@@ -12,4 +12,4 @@ void lcd_setup() {
   lcd.print("Dummie code");
 }
 
-//#endif
+#endif

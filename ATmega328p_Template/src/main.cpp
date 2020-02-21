@@ -35,13 +35,13 @@ void setup()
   upPin.setFunctions(up_short, up_release, up_long);
   selectPin.setFunctions(s_short, s_release, s_long);
 
-  input_shift_reg_SPI_init();
+  input_shift_reg_SPI_setup();
   WDT_setup();
   //timer1_setup();
   sleep_setup();
   
   //tft_setup();
-  lcd_setup();
+  //lcd_setup();
 
 }
 
@@ -58,6 +58,6 @@ void loop()
   selectPin.activate();
 
 
- //activate_sleep();
+   //activate_sleep();
  
 }

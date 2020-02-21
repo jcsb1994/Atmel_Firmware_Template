@@ -1,6 +1,6 @@
 #include "74HC165.h"
 
-void input_shift_reg_SPI_init()
+void input_shift_reg_SPI_setup()
 {
     pinMode(LOAD_CONNECTION, OUTPUT);
     SPI.setClockDivider(SPI_CLOCK_DIV128);

@@ -114,7 +114,7 @@
  * 4x 20 LCD
  ***************************************************************************/
 
-#define FOUR_LCD_CONFIG 1
+#define FOUR_LCD_CONFIG 0
 #define LCD_I2C_ADDR 0x27
 
 

@@ -4,7 +4,7 @@
 #include "app_config.h"
 
 
-void input_shift_reg_SPI_init();
+void input_shift_reg_SPI_setup();
 
 /***************************************************************************
  * inputShiftSnapShot function
