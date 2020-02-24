@@ -1,6 +1,7 @@
-#include "ST7789_oled.h"
-
+#include "app_config.h"
 #if ST7789_CONFIG
+
+#include "ST7789_oled.h"
 
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 

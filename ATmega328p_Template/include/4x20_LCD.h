@@ -3,8 +3,6 @@
 
 #include "app_config.h"
 
-#if FOUR_LCD_CONFIG == 1
-
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h> // F Malpartida's NewLiquidCrystal library
 
@@ -33,5 +31,4 @@ extern LiquidCrystal_I2C lcd;
 
 void lcd_setup();
 
-#endif
 #endif
