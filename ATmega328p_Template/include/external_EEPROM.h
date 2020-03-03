@@ -1,7 +1,7 @@
 #ifndef EEPROM_CHIP_H
 #define EEPROM_CHIP_H
 
-#include <main.h>
+#include "app_config.h"
 
 #define EEPROM_I2C_ADDR 80 //0x50
 #define M_CELL_I2C_ADDR 20   //0x14

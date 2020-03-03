@@ -36,20 +36,14 @@ public:
     void debounce();
     short poll(bool debounce_flag);
     void activate();
+    void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
 
 #if SIMULTANEOUS_BUTTON_PRESSES_CONFIG
     void timerCount();
-<<<<<<< HEAD
-
 #else
     static void timerCount();
 #endif
 
-    void setFunctions(void short_press_function(), void release_press_function(), void long_press_function());
-=======
-    void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
-
->>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
     short state;
 
 private:
@@ -87,7 +81,7 @@ private:
 #else //no simultaneous button presses
     static unsigned int tact_is_pressed;    // Keeps track of which button is pressed during poll
 #if LONG_BUTTON_PRESS_CONFIG
-    static  bool long_effect_done;           // Flags when a long press was executed
+    static bool long_effect_done;           // Flags when a long press was executed
 #if TACT_TIMER_INTERRUPT_CONFIG // If a timer is checking tact, can be used to count time
     static unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
 #else

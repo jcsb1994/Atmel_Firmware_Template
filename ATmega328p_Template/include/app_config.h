@@ -1,27 +1,6 @@
 #ifndef APP_CONFIG_H
 #define APP_CONFIG_H
 
-<<<<<<< HEAD
-=======
-/***************************************************************************
- * embedded utilz
- *tact, WDT, Sleep
- ***************************************************************************/
-
-#include <Arduino.h>
-#include <SPI.h>
-
-#include "tact.h"
-#include "tact_functions.h"
-
-#include "WDT.h"
-#include "sleep.h"
-
-#include "74HC165.h"
-#include "ST7789_oled.h"
-#include "4x20_LCD.h"
->>>>>>> parent of 99a922c... added eeprom rtc
-
 
 /***************************************************************************
  * USED PINS ON THE ATMEGA328P
@@ -75,7 +54,6 @@
 #define LOAD_CONNECTION loadPin
 #define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
 #define LOAD_PIN_PORT_STATE_REG PORTD
-<<<<<<< HEAD
 
 /***************************************************************************
  * Sleep
@@ -87,9 +65,6 @@
  ***************************************************************************/
 
 #define SLEEP_CONFIG 1
-=======
-//#define TACT_INPUT_SHIFT_REG 0
->>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
 
 /***************************************************************************
  * WDT period
@@ -107,27 +82,16 @@
 #define TIMER_ONE_PRESCALER
 
 /***************************************************************************
-<<<<<<< HEAD
  * DS1307 RTC
  ***************************************************************************/
 #define DS1307_CONFIG 0
-
-#ifdef DS1307_CONFIG
-#include "DS1307.h"
-#endif
 
 /***************************************************************************
  * EXTERNAL EEPROM
  ***************************************************************************/
 #define EXTERNAL_EEPROM_CONFIG 0
 
-#ifdef EXTERNAL_EEPROM_CONFIG
-#include "external_EEPROM.h"
-#endif
-
 /***************************************************************************
-=======
->>>>>>> parent of 99a922c... added eeprom rtc
  * ST7789 OLED display
  ***************************************************************************/
 
@@ -155,8 +119,6 @@
 /*##################################################################
 CONSTANT MACROS (DO NOT EDIT)
 ##################################################################*/
-
-
 
 #define TIMER0_USED 1
 #define TIMER1_USED 2

@@ -1,5 +1,4 @@
 #include "tact.h"
-#include <stdarg.h>
 
 // Initialization of static variables
 int tact::mCount = 0;
@@ -166,7 +165,6 @@ void tact::setFunctions(void args(), ...)
 
 va_list ap;
 
-<<<<<<< HEAD
 va_start(ap, args);
 
 #if SHORT_BUTTON_PRESS_CONFIG
@@ -204,8 +202,6 @@ va_end(ap);
     #endif
 )*/
 
-=======
->>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
 void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
 {
     Serial.println("long at start: ");

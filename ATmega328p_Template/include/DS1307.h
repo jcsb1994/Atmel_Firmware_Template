@@ -1,7 +1,7 @@
 #ifndef REALTIME_H
 #define REALTIME_H
 
-#include "main.h"
+#include "app_config.h"
 #include <RTClib.h>
 
 #define REAL_TIME_CLOCK_NAME_CONFIG RTC
