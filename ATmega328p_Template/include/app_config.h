@@ -1,6 +1,26 @@
 #ifndef APP_CONFIG_H
 #define APP_CONFIG_H
 
+<<<<<<< HEAD
+=======
+/***************************************************************************
+ * embedded utilz
+ *tact, WDT, Sleep
+ ***************************************************************************/
+
+#include <Arduino.h>
+#include <SPI.h>
+
+#include "tact.h"
+#include "tact_functions.h"
+
+#include "WDT.h"
+#include "sleep.h"
+
+#include "74HC165.h"
+#include "ST7789_oled.h"
+#include "4x20_LCD.h"
+>>>>>>> parent of 99a922c... added eeprom rtc
 
 /***************************************************************************
  * USED PINS ON THE ATMEGA328P
@@ -82,6 +102,7 @@
 #define TIMER_ONE_PRESCALER
 
 /***************************************************************************
+<<<<<<< HEAD
  * DS1307 RTC
  ***************************************************************************/
 #define DS1307_CONFIG 0
@@ -100,6 +121,8 @@
 #endif
 
 /***************************************************************************
+=======
+>>>>>>> parent of 99a922c... added eeprom rtc
  * ST7789 OLED display
  ***************************************************************************/
 
@@ -116,9 +139,6 @@
 #define SCREEN_TEXT_SIZE SCREEN_TEXT_PIXEL/10
 #define SCREEN_TEXT_ROWS SCREEN_HEIGHT/SCREEN_TEXT_PIXEL
 
-#if ST7789_CONFIG
-#include "ST7789_oled.h"
-#endif
 
 /***************************************************************************
  * 4x 20 LCD
@@ -127,13 +147,12 @@
 #define FOUR_LCD_CONFIG 0
 #define LCD_I2C_ADDR 0x27
 
-#if FOUR_LCD_CONFIG
-#include "4x20_LCD.h"
-#endif
 
 /*##################################################################
 CONSTANT MACROS (DO NOT EDIT)
 ##################################################################*/
+
+
 
 #define TIMER0_USED 1
 #define TIMER1_USED 2
