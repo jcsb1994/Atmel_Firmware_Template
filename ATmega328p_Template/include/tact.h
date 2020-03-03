@@ -2,7 +2,6 @@
 #define TACT_H
 
 #include "main.h"
-#include "74HC165.h"
 
 /*##################################################
             MACROS
@@ -70,11 +69,11 @@ private:
     volatile unsigned int tact_is_pressed; // Keeps track if button is pressed during poll
 #if LONG_BUTTON_PRESS_CONFIG
     volatile bool long_effect_done;           // Flags when a long press was executed
-#if TACT_TIMER_INTERRUPT_CONFIG               // If a timer is checking tact, can be used to count time
+#if TIMERCOUNT_ISR_CONFIG               // If a timer is checking tact, can be used to count time
     volatile unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
 #else
     volatile unsigned long last_press_millis;
-#endif // TACT_TIMER_INTERRUPT_CONFIG
+#endif // TIMERCOUNT_ISR_CONFIG
 #endif // LONG_BUTTON_PRESS_CONFIG
 
     // Press and long press variables (single press at a time version)
@@ -82,11 +81,11 @@ private:
     static unsigned int tact_is_pressed;    // Keeps track of which button is pressed during poll
 #if LONG_BUTTON_PRESS_CONFIG
     static bool long_effect_done;           // Flags when a long press was executed
-#if TACT_TIMER_INTERRUPT_CONFIG // If a timer is checking tact, can be used to count time
+#if TIMERCOUNT_ISR_CONFIG // If a timer is checking tact, can be used to count time
     static unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
-#else
+#else  //
     static unsigned long last_press_millis;
-#endif // TACT_TIMER_INTERRUPT_CONFIG
+#endif // TIMERCOUNT_ISR_CONFIG
 #endif // LONG_BUTTON_PRESS_CONFIG
 #endif // SIMULTANEOUS_BUTTON_PRESSES_CONFIG
 };

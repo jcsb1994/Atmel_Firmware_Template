@@ -1,21 +1,22 @@
 #ifndef APP_CONFIG_H
 #define APP_CONFIG_H
 
-
-/***************************************************************************
- * USED PINS ON THE ATMEGA328P
- ***will now be declared in main
- ***************************************************************************/
+/*##################################################################
+* USED PINS ON THE ATMEGA328P
+##################################################################*/
 
 #define ledPin 5
 #define loadPin 4
 #define timerLedPin 7
 
 /********** ST7789 OLED SPI pins ***********/
-#define TFT_CS    10  // define chip select pin
-#define TFT_DC     9  // define data/command pin
-#define TFT_RST    8  // define reset pin, or set to -1 and connect to Arduino RESET pin
+#define TFT_CS 10 // define chip select pin
+#define TFT_DC 9  // define data/command pin
+#define TFT_RST 8 // define reset pin, or set to -1 and connect to Arduino RESET pin
 
+/*##################################################################
+* BASIC APP CONFIG
+##################################################################*/
 
 /***************************************************************************
  * BUTTONS (TACT SWITCHES) MACROS
@@ -23,26 +24,25 @@
 
 #define BUTTON_ACTIVE_STATE_CONFIG 0 // 1 for active HIGH buttons or 0 for active low
 
-#define SHORT_BUTTON_PRESS_CONFIG 1 // 1 to turn ON functionality for short button presses
-#define BUTTON_RELEASE_CONFIG 1     // 1 to turn ON functionality for button releases
-#define LONG_BUTTON_PRESS_CONFIG 1          // 1 to turn ON functionality for long button presses
-#define RELEASE_AFTER_LONG_EFFECT_CONFIG 1  // 1 will trigger a release effect even after long press effects occured
+#define SHORT_BUTTON_PRESS_CONFIG 1        // 1 to turn ON functionality for short button presses
+#define BUTTON_RELEASE_CONFIG 1            // 1 to turn ON functionality for button releases
+#define LONG_BUTTON_PRESS_CONFIG 1         // 1 to turn ON functionality for long button presses
+#define RELEASE_AFTER_LONG_EFFECT_CONFIG 1 // 1 will trigger a release effect even after long press effects occured
 #define SIMULTANEOUS_BUTTON_PRESSES_CONFIG 0
 
 /* sleep stops millis() so if no timer is used and sleep is used, long press timings won't fit */
 
 //TIMER FOR TIMERCOUNTER() FUNCTION ONLY (debounce can be called anywhere faster paced)
-#define TACT_TIMER_INTERRUPT_CONFIG WDT_USED    // Set up if there is a timer ISR managing tact.timerCounter()
-#define TACT_TIMER_PERIOD   WDT_PERIOD  // Set up the period of the timer used for tact.timerCounter
-#define LONG_PRESS_DELAY 1000  // Set up desired time before long presses are triggered in milliseconds
+#define TIMERCOUNT_ISR_CONFIG WDT_USED // Set up if there is a timer ISR managing tact.timerCounter()
+#define TACT_TIMER_PERIOD WDT_PERIOD   // Set up the period of the timer used for tact.timerCounter
+#define LONG_PRESS_DELAY 1000          // Set up desired time before long presses are triggered in milliseconds
 
 // Debouncing in main is too fast by default (adds a delay for running tact.debounce();)
-#define DEBOUNCE_IN_MAIN 0  // Not created yet... Might not be useful
+#define DEBOUNCE_IN_MAIN 0 // Not created yet... Might not be useful
 
 // Debounce algorithm macros (do not debounce if using sleep)
 #define DEBOUNCE_TIME 0.3
 #define SAMPLE_FREQUENCY 6
-
 
 /***************************************************************************
  * 74HC165 PINS
@@ -77,9 +77,13 @@
 #define WDT_CONFIG 1
 #define WDT_PERIOD 64 // WDT period in microseconds, or from other timer chosen
 
-#define TIMER_ONE_CONFIG 0   // Should not be used if sleep is active (disactivate timers)
+#define TIMER_ONE_CONFIG 0 // Should not be used if sleep is active (disactivate timers)
 #define TIMER1_PERIOD
 #define TIMER_ONE_PRESCALER
+
+/*##################################################################
+ADDONS : ADD HEADERS IF USING THOSE PARTS
+##################################################################*/
 
 /***************************************************************************
  * DS1307 RTC
@@ -100,14 +104,12 @@
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 240
 
-#define SCREEN_CENTER_X SCREEN_WIDTH/2
-#define SCREEN_CENTER_Y SCREEN_HEIGHT/2
-
+#define SCREEN_CENTER_X SCREEN_WIDTH / 2
+#define SCREEN_CENTER_Y SCREEN_HEIGHT / 2
 
 #define SCREEN_TEXT_PIXEL 30
-#define SCREEN_TEXT_SIZE SCREEN_TEXT_PIXEL/10
-#define SCREEN_TEXT_ROWS SCREEN_HEIGHT/SCREEN_TEXT_PIXEL
-
+#define SCREEN_TEXT_SIZE SCREEN_TEXT_PIXEL / 10
+#define SCREEN_TEXT_ROWS SCREEN_HEIGHT / SCREEN_TEXT_PIXEL
 
 /***************************************************************************
  * 4x 20 LCD
@@ -126,7 +128,7 @@ CONSTANT MACROS (DO NOT EDIT)
 #define WDT_USED 4
 
 #define ITERATIONS_TO_LONG_PRESS_TRIGGER LONG_PRESS_DELAY / TACT_TIMER_PERIOD //calculates how many ISRs needed for long press
-#define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY) //debounce algorith max samples
+#define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY)                            //debounce algorith max samples
 
 // End of File
 #endif

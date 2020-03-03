@@ -81,7 +81,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #endif
         tact_is_pressed += mID;
 
-#if !TACT_TIMER_INTERRUPT_CONFIG
+#if !TIMERCOUNT_ISR_CONFIG
         last_press_millis = millis();
         //Serial.println(last_press_millis);
 #endif
@@ -137,7 +137,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 #if LONG_BUTTON_PRESS_CONFIG == 1
 
-#if TACT_TIMER_INTERRUPT_CONFIG
+#if TIMERCOUNT_ISR_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
     {
         Serial.println(long_press_counter);

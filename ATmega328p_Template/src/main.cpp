@@ -3,7 +3,7 @@
 input_shift_register buttons_shift;
 
 tact upPin(2);
-tact selectPin(0, buttons_shift);
+tact selectPin(3);
 
 ISR(WDT_vect)
 {
