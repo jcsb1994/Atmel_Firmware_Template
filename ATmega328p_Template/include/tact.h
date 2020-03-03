@@ -39,12 +39,17 @@ public:
 
 #if SIMULTANEOUS_BUTTON_PRESSES_CONFIG
     void timerCount();
+<<<<<<< HEAD
 
 #else
     static void timerCount();
 #endif
 
     void setFunctions(void short_press_function(), void release_press_function(), void long_press_function());
+=======
+    void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
+
+>>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
     short state;
 
 private:

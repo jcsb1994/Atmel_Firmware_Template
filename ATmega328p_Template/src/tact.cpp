@@ -136,7 +136,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   * polling the right button, which is pressed and marked with the semaphore.
   ***************************************************************************/
 
-#if LONG_BUTTON_PRESS_CONFIG
+#if LONG_BUTTON_PRESS_CONFIG == 1
 
 #if TACT_TIMER_INTERRUPT_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
@@ -166,6 +166,7 @@ void tact::setFunctions(void args(), ...)
 
 va_list ap;
 
+<<<<<<< HEAD
 va_start(ap, args);
 
 #if SHORT_BUTTON_PRESS_CONFIG
@@ -203,6 +204,8 @@ va_end(ap);
     #endif
 )*/
 
+=======
+>>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
 void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
 {
     Serial.println("long at start: ");

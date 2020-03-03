@@ -49,11 +49,14 @@ void setup()
 
   input_shift_reg_SPI_setup();
   WDT_setup();
+<<<<<<< HEAD
   //timer1_setup();
   sleep_setup();
 
   //tft_setup();
   //lcd_setup();
+=======
+>>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
 }
 
 void loop()
@@ -73,5 +76,8 @@ void loop()
   downPin->activate();
  // selectPin.activate();
 
+<<<<<<< HEAD
   //activate_sleep();
+=======
+>>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
 }

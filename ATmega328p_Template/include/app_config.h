@@ -22,6 +22,7 @@
 #include "4x20_LCD.h"
 >>>>>>> parent of 99a922c... added eeprom rtc
 
+
 /***************************************************************************
  * USED PINS ON THE ATMEGA328P
  ***will now be declared in main
@@ -74,6 +75,7 @@
 #define LOAD_CONNECTION loadPin
 #define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
 #define LOAD_PIN_PORT_STATE_REG PORTD
+<<<<<<< HEAD
 
 /***************************************************************************
  * Sleep
@@ -85,6 +87,9 @@
  ***************************************************************************/
 
 #define SLEEP_CONFIG 1
+=======
+//#define TACT_INPUT_SHIFT_REG 0
+>>>>>>> parent of b02994b... usable but setFunctions needs 3 arguments
 
 /***************************************************************************
  * WDT period
@@ -146,7 +151,6 @@
 
 #define FOUR_LCD_CONFIG 0
 #define LCD_I2C_ADDR 0x27
-
 
 /*##################################################################
 CONSTANT MACROS (DO NOT EDIT)
