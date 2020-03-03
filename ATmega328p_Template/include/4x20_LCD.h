@@ -1,7 +1,7 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include "app_config.h"
+#include "main.h"
 
 #if FOUR_LCD_CONFIG == 1
 
