@@ -1,7 +1,5 @@
-#include "app_config.h"
-#ifdef EXTERNAL_EEPROM_CONFIG
-
-#include "external_EEPROM.h"
+#include "main.h"
+#if EXTERNAL_EEPROM_CONFIG
 
 int data = 0;
 

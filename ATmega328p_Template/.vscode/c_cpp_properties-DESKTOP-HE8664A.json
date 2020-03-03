@@ -1,0 +1,73 @@
+{
+    "configurations": [
+        {
+            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "c:/Users/jcbsk/OneDrive/Documents/Github/Atmel_Firmware_Template/ATmega328p_Template/include",
+                "c:/Users/jcbsk/OneDrive/Documents/Github/Atmel_Firmware_Template/ATmega328p_Template/src",
+                "C:/Users/jcbsk/.platformio/lib/Adafruit ST7735 and ST7789 Library_ID12",
+                "C:/Users/jcbsk/.platformio/lib/Adafruit GFX Library_ID13",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/SPI/src",
+                "C:/Users/jcbsk/.platformio/lib/RTClib_ID83",
+                "C:/Users/jcbsk/.platformio/lib/LiquidCrystal_ID136",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/Wire/src",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/cores/MiniCore",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/variants/standard",
+                "C:/Users/jcbsk/.platformio/lib/VL53L1X_ID5481",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/AVR_examples/src",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/EEPROM/src",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/Optiboot_flasher/src",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/SPI1/src",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/SoftwareSerial/src",
+                "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/Wire1/src",
+                "C:/Users/jcbsk/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "c:/Users/jcbsk/OneDrive/Documents/Github/Atmel_Firmware_Template/ATmega328p_Template/include",
+                    "c:/Users/jcbsk/OneDrive/Documents/Github/Atmel_Firmware_Template/ATmega328p_Template/src",
+                    "C:/Users/jcbsk/.platformio/lib/Adafruit ST7735 and ST7789 Library_ID12",
+                    "C:/Users/jcbsk/.platformio/lib/Adafruit GFX Library_ID13",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/SPI/src",
+                    "C:/Users/jcbsk/.platformio/lib/RTClib_ID83",
+                    "C:/Users/jcbsk/.platformio/lib/LiquidCrystal_ID136",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/Wire/src",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/cores/MiniCore",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/variants/standard",
+                    "C:/Users/jcbsk/.platformio/lib/VL53L1X_ID5481",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/AVR_examples/src",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/EEPROM/src",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/Optiboot_flasher/src",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/SPI1/src",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/SoftwareSerial/src",
+                    "C:/Users/jcbsk/.platformio/packages/framework-arduino-avr-minicore/libraries/Wire1/src",
+                    "C:/Users/jcbsk/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=40201",
+                "ARDUINO_AVR_ATmega328P",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega328P__",
+                ""
+            ],
+            "intelliSenseMode": "clang-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "C:/Users/jcbsk/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega328p",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}

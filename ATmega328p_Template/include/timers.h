@@ -1,7 +1,7 @@
 #ifndef WDT_H
 #define WDT_H
 
-#include "app_config.h"
+#include "main.h"
 
 
 /*##################################################

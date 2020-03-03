@@ -1,30 +1,15 @@
 #ifndef APP_CONFIG_H
 #define APP_CONFIG_H
 
-/***************************************************************************
- * embedded utilz
- *tact, WDT, Sleep
- ***************************************************************************/
-
-#include <Arduino.h>
-#include <SPI.h>
-
-#include "tact.h"
-#include "tact_functions.h"
-
-#include "timers.h"
-#include "sleep.h"
-
-#include "74HC165.h"
 
 /***************************************************************************
  * USED PINS ON THE ATMEGA328P
  ***will now be declared in main
  ***************************************************************************/
 
-#define ledPin 7
-#define loadPin 3
-#define timerLedPin 6
+#define ledPin 5
+#define loadPin 4
+#define timerLedPin 7
 
 /********** ST7789 OLED SPI pins ***********/
 #define TFT_CS    10  // define chip select pin
@@ -34,7 +19,6 @@
 
 /***************************************************************************
  * BUTTONS (TACT SWITCHES) MACROS
- * 
  ***************************************************************************/
 
 #define BUTTON_ACTIVE_STATE_CONFIG 0 // 1 for active HIGH buttons or 0 for active low
@@ -43,12 +27,17 @@
 #define BUTTON_RELEASE_CONFIG 1     // 1 to turn ON functionality for button releases
 #define LONG_BUTTON_PRESS_CONFIG 1          // 1 to turn ON functionality for long button presses
 #define RELEASE_AFTER_LONG_EFFECT_CONFIG 1  // 1 will trigger a release effect even after long press effects occured
+#define SIMULTANEOUS_BUTTON_PRESSES_CONFIG 0
 
 /* sleep stops millis() so if no timer is used and sleep is used, long press timings won't fit */
-#define TACT_TIMER_INTERRUPT_CONFIG WDT_USED    // Set up if there is a timer ISR managing tacts (polling,debouncing, long presses) WDT_USED, etc
-#define TACT_TIMER_PERIOD   WDT_PERIOD  // Set up the period of the timer used for tact
+
+//TIMER FOR TIMERCOUNTER() FUNCTION ONLY (debounce can be called anywhere faster paced)
+#define TACT_TIMER_INTERRUPT_CONFIG WDT_USED    // Set up if there is a timer ISR managing tact.timerCounter()
+#define TACT_TIMER_PERIOD   WDT_PERIOD  // Set up the period of the timer used for tact.timerCounter
 #define LONG_PRESS_DELAY 1000  // Set up desired time before long presses are triggered in milliseconds
 
+// Debouncing in main is too fast by default (adds a delay for running tact.debounce();)
+#define DEBOUNCE_IN_MAIN 0  // Not created yet... Might not be useful
 
 // Debounce algorithm macros (do not debounce if using sleep)
 #define DEBOUNCE_TIME 0.3
@@ -61,6 +50,7 @@
  * SCK    -   pin 13 to CP (pin2) on registers
  * LOAD   -   digital OUTPUT pin of microcontroller to PL (pin1) on registers. 
  ***************************************************************************/
+
 #define LOAD_CONNECTION loadPin
 #define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
 #define LOAD_PIN_PORT_STATE_REG PORTD
@@ -87,13 +77,14 @@
 #define WDT_CONFIG 1
 #define WDT_PERIOD 64 // WDT period in microseconds, or from other timer chosen
 
-#define TIMER_ONE_CONFIG 1   // Should not be used if sleep is active (disactivate timers)
+#define TIMER_ONE_CONFIG 0   // Should not be used if sleep is active (disactivate timers)
+#define TIMER1_PERIOD
 #define TIMER_ONE_PRESCALER
 
 /***************************************************************************
  * DS1307 RTC
  ***************************************************************************/
-#define DS1307_CONFIG 1
+#define DS1307_CONFIG 0
 
 #ifdef DS1307_CONFIG
 #include "DS1307.h"
@@ -102,7 +93,7 @@
 /***************************************************************************
  * EXTERNAL EEPROM
  ***************************************************************************/
-#define EXTERNAL_EEPROM_CONFIG 1
+#define EXTERNAL_EEPROM_CONFIG 0
 
 #ifdef EXTERNAL_EEPROM_CONFIG
 #include "external_EEPROM.h"

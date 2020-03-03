@@ -1,3 +1,6 @@
+#include "app_config.h"
+
+#ifdef DS1307_CONFIG
 #include "DS1307.h"
 
 RTC_DS1307 REAL_TIME_CLOCK_NAME_CONFIG;
@@ -13,3 +16,4 @@ void DS1307_setup()
   //REAL_TIME_CLOCK_NAME_CONFIG.adjust(DateTime(2016, 11, 19, 13, 45, 0)); // <----------------------SET TIME AND DATE: YYYY,MM,DD,HH,MM,SS
 }
 
+#endif

@@ -1,7 +1,7 @@
 #ifndef SLEEP_H
 #define SLEEP_H
 
-#include "app_config.h"
+#include "main.h"
 
 void sleep_setup();
 

@@ -1,7 +1,7 @@
 #ifndef TACT_ACT_H
 #define TACT_ACT_H
 
-#include "app_config.h"
+#include "main.h"
 
 
 void up_short();

@@ -1,7 +1,7 @@
 #ifndef IN_SHI_REG_H
 #define  IN_SHI_REG_H
 
-#include "app_config.h"
+#include "main.h"
 
 
 void input_shift_reg_SPI_setup();

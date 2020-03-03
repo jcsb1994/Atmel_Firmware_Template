@@ -1,7 +1,7 @@
 #ifndef TACT_H
 #define TACT_H
 
-#include "app_config.h"
+#include "main.h"
 #include "74HC165.h"
 
 /*##################################################
@@ -20,7 +20,6 @@
             DECLARATION
 ##################################################*/
 
-
 struct input_shift_register
 {
     bool not_used;
@@ -31,47 +30,66 @@ struct input_shift_register
 class tact
 {
 public:
+    tact(int assigned_pin);                              // Constructor
+    tact(int assigned_pin, input_shift_register &shift); // Overloaded constructor for tacts linked to a shift register chip
 
-    tact(int assigned_pin); //Constructor
-    tact(int assigned_pin, input_shift_register& shift); // Overloaded constructor for tacts linked to a shift register chip
-    
     void debounce();
-    //void debounce(input_shift_register& linked_shift);
     short poll(bool debounce_flag);
     void activate();
+
+#if SIMULTANEOUS_BUTTON_PRESSES_CONFIG
     void timerCount();
-    void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
+
+#else
+    static void timerCount();
+#endif
+
+    void setFunctions(void short_press_function(), void release_press_function(), void long_press_function());
     short state;
 
 private:
     int pin;
+    static int mCount;
+    unsigned int mID;
 
     bool input_shift_used;
-    //input_shift_register input_shift;
-    input_shift_register* input_shift_ptr;
-    // Pointers to tact effect functions
-    void (*short_ptr)(void);
-    void (*release_ptr)(void);
-    void (*long_ptr)(void);
+    input_shift_register *input_shift_ptr;
 
-    // Debounce static variables
+    // Pointers to tact effect functions
+    void (*short_ptr)();
+    void (*release_ptr)();
+    void (*long_ptr)();
+
+    // Debounce variables
     volatile unsigned int input; // Current state of the tact switch
     volatile unsigned int integrator;
     volatile bool btnOutput; // Output of the algorithm
     volatile bool lastOutput;
 
-    volatile unsigned int tact_is_pressed; // Keeps track of which button is pressed during poll for long presses and others NVM!!
-
-//#if LONG_BUTTON_PRESS_CONFIG
-    volatile bool long_effect_done; // Flags when a long press was executed
-//#if TACT_TIMER_INTERRUPT_CONFIG == WDT_USED // If a timer is checking tact, can be used to count time
+    // Press and long press variables (multiple simultaneous presses version)
+#if SIMULTANEOUS_BUTTON_PRESSES_CONFIG
+    volatile unsigned int tact_is_pressed; // Keeps track if button is pressed during poll
+#if LONG_BUTTON_PRESS_CONFIG
+    volatile bool long_effect_done;           // Flags when a long press was executed
+#if TACT_TIMER_INTERRUPT_CONFIG               // If a timer is checking tact, can be used to count time
     volatile unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
-
-//#else
+#else
     volatile unsigned long last_press_millis;
-//#endif
-//#endif
-};
+#endif // TACT_TIMER_INTERRUPT_CONFIG
+#endif // LONG_BUTTON_PRESS_CONFIG
 
+    // Press and long press variables (single press at a time version)
+#else //no simultaneous button presses
+    static unsigned int tact_is_pressed;    // Keeps track of which button is pressed during poll
+#if LONG_BUTTON_PRESS_CONFIG
+    static  bool long_effect_done;           // Flags when a long press was executed
+#if TACT_TIMER_INTERRUPT_CONFIG // If a timer is checking tact, can be used to count time
+    static unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
+#else
+    static unsigned long last_press_millis;
+#endif // TACT_TIMER_INTERRUPT_CONFIG
+#endif // LONG_BUTTON_PRESS_CONFIG
+#endif // SIMULTANEOUS_BUTTON_PRESSES_CONFIG
+};
 
 #endif // Header guard

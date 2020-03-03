@@ -1,13 +1,19 @@
 #include "tact.h"
 #include <stdarg.h>
 
+// Initialization of static variables
+int tact::mCount = 0;
+#if SIMULTANEOUS_BUTTON_PRESSES_CONFIG == 0
+unsigned int tact::tact_is_pressed = 0;
+unsigned int tact::long_press_counter = 0;
+bool tact::long_effect_done = 0;
+#endif
 
-
-tact::tact(int assigned_pin)
+// Constructors
+tact::tact(int assigned_pin) : pin(assigned_pin)
 {
-
-    pin = assigned_pin; // Associate the pin to the private pin in the class
-
+    mCount++;
+    mID = mCount;
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
     pinMode(pin, INPUT);
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
@@ -15,13 +21,15 @@ tact::tact(int assigned_pin)
 #endif
 }
 
-tact::tact(int assigned_pin, input_shift_register &shift)
+tact::tact(int assigned_pin, input_shift_register &shift) : pin(assigned_pin), input_shift_ptr(&shift)
 {
-    pin = assigned_pin; // Associate the pin to the private pin in the class
+    mCount++;
+    mID = mCount;
     input_shift_used++;
-    tact::input_shift_ptr = &shift;
+    //tact::input_shift_ptr = &shift;
 }
 
+// Functions
 void tact::debounce()
 {
     if (input_shift_used)
@@ -66,17 +74,17 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 * to the current polled button.
 ***************************************************************************/
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
-    if (btnOutput && !lastOutput)
+    if (btnOutput && !lastOutput && !tact_is_pressed)
     {
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
-    if (!btnOutput && lastOutput)
+    if (!btnOutput && lastOutput && !tact_is_pressed)
     {
 #endif
-        tact_is_pressed++;
+        tact_is_pressed += mID;
 
 #if !TACT_TIMER_INTERRUPT_CONFIG
         last_press_millis = millis();
-        Serial.println(last_press_millis);
+        //Serial.println(last_press_millis);
 #endif
 
 #if SHORT_BUTTON_PRESS_CONFIG == 1
@@ -93,10 +101,10 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   ***************************************************************************/
 
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
-    else if (lastOutput && !btnOutput)
+    else if (lastOutput && !btnOutput && tact_is_pressed == mID)
     {
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
-    else if (!lastOutput && btnOutput)
+    else if (!lastOutput && btnOutput && tact_is_pressed == mID)
     {
 #endif
 
@@ -133,7 +141,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #if TACT_TIMER_INTERRUPT_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
     {
-        //Serial.println(long_press_counter);
+        Serial.println(long_press_counter);
         long_press_counter = 0; // Stop counting, flag up
 #else
     else if (tact_is_pressed && !long_effect_done && (millis() - last_press_millis) >= LONG_PRESS_DELAY)
@@ -195,31 +203,37 @@ va_end(ap);
     #endif
 )*/
 
-
-void tact::setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void))
+void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
 {
-    short_ptr = short_press_function;
-    release_ptr = release_press_function;
-    long_ptr = long_press_function;
-}
+    Serial.println("long at start: ");
+    Serial.println((int)&long_ptr, HEX);
 
+    short_ptr = short_press_function;
+    Serial.println((int)&short_ptr, HEX);
+    release_ptr = release_press_function;
+    Serial.println((int)&release_ptr, HEX);
+    long_ptr = long_press_function;
+    Serial.println((int)&long_ptr, HEX);
+}
 
 void tact::activate()
 {
     if (state)
     {
+        Serial.println((int)&long_ptr, HEX);
         switch (tact::state)
         {
+        case LONG_EFFECT_REQUIRED:
+            Serial.println("looong");
+            long_ptr();
+            break;
+
         case SHORT_EFFECT_REQUIRED:
             short_ptr();
             break;
 
         case RELEASE_EFFECT_REQUIRED:
             release_ptr();
-            break;
-
-        case LONG_EFFECT_REQUIRED:
-            long_ptr();
             break;
 
         default:
@@ -233,5 +247,4 @@ void tact::timerCount()
 {
     if (tact_is_pressed && !long_effect_done)
         long_press_counter++;
-    
 }

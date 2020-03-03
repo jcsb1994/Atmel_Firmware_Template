@@ -1,7 +1,7 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include "app_config.h"
+#include "main.h"
 
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h> // F Malpartida's NewLiquidCrystal library

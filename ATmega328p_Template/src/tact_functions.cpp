@@ -9,25 +9,35 @@ void up_short()
 void up_release()
 {
   digitalWrite(ledPin, LOW);
+  Serial.println("release effect");
 }
+
 void up_long()
 {
+  Serial.println("MARCHE");
   for (int i = 0; i < 6; i++)
     DDRD ^= (1 << ledPin),
-        delay(10);
+        delay(100);
 }
 
 void s_short()
 {
-  digitalWrite(ledPin, HIGH);
+  digitalWrite(timerLedPin, HIGH);
+  Serial.println("lol");
 }
 void s_release()
 {
-  digitalWrite(ledPin, LOW);
+  digitalWrite(timerLedPin, LOW);
+  Serial.println("fu");
 }
 void s_long()
 {
-  for (int i = 0; i < 6; i++)
-    DDRD ^= (1 << ledPin),
-        delay(10);
+  Serial.println("MARCHE PAS");
+digitalWrite(timerLedPin, HIGH);
+delay(100);
+digitalWrite(timerLedPin, LOW);
+delay(100);
+digitalWrite(timerLedPin, HIGH);
+delay(100);
+digitalWrite(timerLedPin, LOW);
 }
