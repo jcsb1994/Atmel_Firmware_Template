@@ -3,6 +3,7 @@
 
 #include "main.h"
 
+void empty();
 
 void up_short();
 
@@ -16,5 +17,12 @@ void s_short();
 void s_release();
 
 void s_long();
+
+
+void t_short();
+
+void t_release();
+
+void t_long();
 
 #endif

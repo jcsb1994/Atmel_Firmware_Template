@@ -5,11 +5,12 @@
 * USED PINS ON THE ATMEGA328P
 ##################################################################*/
 
-#define ledPin 5
-#define timerLedPin 7
+#define ledPin 8
+#define LedPin2 9
+#define LedPin3 10
 
 //74HC165 input shift register
-#define LOAD_CONNECTION 4
+#define LOAD_CONNECTION 6
 #define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
 #define LOAD_PIN_PORT_STATE_REG PORTD
 
@@ -26,11 +27,11 @@
  * BUTTONS (TACT SWITCHES) MACROS
  ***************************************************************************/
 
-#define BUTTON_ACTIVE_STATE_CONFIG 0 // 1 for active HIGH buttons or 0 for active low
+#define BUTTON_ACTIVE_STATE_CONFIG 1 // 1 for active HIGH buttons or 0 for active low
 
 #define SHORT_BUTTON_PRESS_CONFIG 1        // 1 to turn ON functionality for short button presses
 #define BUTTON_RELEASE_CONFIG 1            // 1 to turn ON functionality for button releases
-#define LONG_BUTTON_PRESS_CONFIG 1         // 1 to turn ON functionality for long button presses
+#define LONG_BUTTON_PRESS_CONFIG 0        // 1 to turn ON functionality for long button presses
 #define RELEASE_AFTER_LONG_EFFECT_CONFIG 1 // 1 will trigger a release effect even after long press effects occured
 #define SIMULTANEOUS_BUTTON_PRESSES_CONFIG 0
 

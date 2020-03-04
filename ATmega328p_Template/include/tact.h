@@ -34,16 +34,20 @@ public:
 
     void debounce();
     void poll(bool debounce_flag);
+    static int* pressOutput;
+
     void activate();
     void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
 
+#if LONG_BUTTON_PRESS_CONFIG
 #if SIMULTANEOUS_BUTTON_PRESSES_CONFIG
     void timerCount();
 #else
     static void timerCount();
 #endif
+#endif // Long button presses
 
-    void (*long_ptr)();
+    
 
 private:
     int pin;
@@ -56,6 +60,7 @@ private:
     input_shift_register *input_shift_ptr;
 
     // Pointers to tact effect functions
+    void (*long_ptr)();
     void (*short_ptr)();
     void (*release_ptr)();
     

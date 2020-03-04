@@ -2,10 +2,13 @@
 
 // Initialization of static variables
 int tact::mCount = 0;
+int *tact::pressOutput = 0;
 #if SIMULTANEOUS_BUTTON_PRESSES_CONFIG == 0
 unsigned int tact::tact_is_pressed = 0;
+#if LONG_BUTTON_PRESS_CONFIG
 unsigned int tact::long_press_counter = 0;
 bool tact::long_effect_done = 0;
+#endif
 #endif
 
 // Constructors
@@ -88,6 +91,8 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 #if SHORT_BUTTON_PRESS_CONFIG == 1
         tact::state = SHORT_EFFECT_REQUIRED;
+        *pressOutput = (mID << 2) + state;
+
 #endif
     }
 
@@ -115,7 +120,8 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #if LONG_BUTTON_PRESS_CONFIG == 1 && !RELEASE_AFTER_LONG_EFFECT_CONFIG
             if (!long_effect_done) //if there was no long press. If there was, releasing will not trigger another effect
 #endif
-                tact::state = RELEASE_EFFECT_REQUIRED;
+                tact::state = RELEASE_EFFECT_REQUIRED,
+                *pressOutput = (mID << 2) + state;
         }
 #endif
 
@@ -135,7 +141,7 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   * polling the right button, which is pressed and marked with the semaphore.
   ***************************************************************************/
 
-#if LONG_BUTTON_PRESS_CONFIG == 1
+#if LONG_BUTTON_PRESS_CONFIG
 
 #if TIMERCOUNT_ISR_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
@@ -146,18 +152,20 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     else if (tact_is_pressed && !long_effect_done && (millis() - last_press_millis) >= LONG_PRESS_DELAY)
     {
 #endif
-#endif
+
         tact::state = LONG_EFFECT_REQUIRED;
+        *pressOutput = (mID << 2) + state;
         long_effect_done++;
     }
+#endif
 
-    /***************************************************************************
+        /***************************************************************************
   * Mark the pressed button as read to prevent multiple readings
   ***************************************************************************/
 
-    last_debounced_input = now_debounced_input;
-}
-/*
+        tact::last_debounced_input = tact::now_debounced_input;
+    }
+    /*
 void tact::setFunctions(void args(), ...)
 
 {
@@ -182,7 +190,7 @@ va_end(ap);
 }
 */
 
-/* #if SHORT_BUTTON_PRESS_CONFIG
+    /* #if SHORT_BUTTON_PRESS_CONFIG
     void short_press_function()
     #if  BUTTON_RELEASE_CONFIG | LONG_BUTTON_PRESS_CONFIG
     ,
@@ -201,48 +209,49 @@ va_end(ap);
     #endif
 )*/
 
-void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
-{
-    //Serial.println("long at start: ");
-   // Serial.println((int)&long_ptr, HEX);
-
-    short_ptr = short_press_function;
-    //Serial.println((int)&short_ptr, HEX);
-    release_ptr = release_press_function;
-    //Serial.println((int)&release_ptr, HEX);
-    long_ptr = long_press_function;
-   // Serial.println((int)&long_ptr, HEX);
-}
-
-void tact::activate()
-{
-    if (state)
+    void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
     {
-        Serial.println((int)&long_ptr, HEX);
-        switch (tact::state)
-        {
-        case LONG_EFFECT_REQUIRED:
-            Serial.println("looong");
-            long_ptr();
-            break;
+        //Serial.println("long at start: ");
+        // Serial.println((int)&long_ptr, HEX);
 
-        case SHORT_EFFECT_REQUIRED:
-            short_ptr();
-            break;
-
-        case RELEASE_EFFECT_REQUIRED:
-            release_ptr();
-            break;
-
-        default:
-            break;
-        }
-        tact::state = 0;
+        short_ptr = short_press_function;
+        //Serial.println((int)&short_ptr, HEX);
+        release_ptr = release_press_function;
+        //Serial.println((int)&release_ptr, HEX);
+        tact::long_ptr = long_press_function;
+        // Serial.println((int)&long_ptr, HEX);
     }
-}
 
-void tact::timerCount()
-{
-    if (tact_is_pressed && !long_effect_done)
-        long_press_counter++;
-}
+    void tact::activate()
+    {
+        if (state)
+        {
+            //Serial.println((int)&long_ptr, HEX);
+            switch (tact::state)
+            {
+            case LONG_EFFECT_REQUIRED:
+                tact::long_ptr();
+                break;
+
+            case SHORT_EFFECT_REQUIRED:
+                short_ptr();
+                break;
+
+            case RELEASE_EFFECT_REQUIRED:
+                release_ptr();
+                break;
+
+            default:
+                break;
+            }
+            tact::state = 0;
+        }
+    }
+
+#if LONG_BUTTON_PRESS_CONFIG
+    void tact::timerCount()
+    {
+        if (tact_is_pressed && !long_effect_done)
+            long_press_counter++;
+    }
+#endif
