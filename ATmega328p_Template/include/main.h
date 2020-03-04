@@ -9,7 +9,7 @@
 #include "tact.h"
 #include "tact_functions.h"
 
-#include "WDT.h"
+#include "Timers.h"
 #include "sleep.h"
 
 #endif

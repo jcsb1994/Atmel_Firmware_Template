@@ -33,7 +33,7 @@ public:
     tact(int assigned_pin, input_shift_register &shift); // Overloaded constructor for tacts linked to a shift register chip
 
     void debounce();
-    short poll(bool debounce_flag);
+    void poll(bool debounce_flag);
     void activate();
     void setFunctions(void short_press_function(void), void release_press_function(void), void long_press_function(void));
 
@@ -43,12 +43,14 @@ public:
     static void timerCount();
 #endif
 
-    short state;
+    void (*long_ptr)();
 
 private:
     int pin;
     static int mCount;
     unsigned int mID;
+
+    short state;
 
     bool input_shift_used;
     input_shift_register *input_shift_ptr;
@@ -56,13 +58,13 @@ private:
     // Pointers to tact effect functions
     void (*short_ptr)();
     void (*release_ptr)();
-    void (*long_ptr)();
+    
 
     // Debounce variables
     volatile unsigned int input; // Current state of the tact switch
     volatile unsigned int integrator;
-    volatile bool btnOutput; // Output of the algorithm
-    volatile bool lastOutput;
+    volatile bool now_debounced_input; // Output of the algorithm
+    volatile bool last_debounced_input;
 
     // Press and long press variables (multiple simultaneous presses version)
 #if SIMULTANEOUS_BUTTON_PRESSES_CONFIG
@@ -71,8 +73,10 @@ private:
     volatile bool long_effect_done;           // Flags when a long press was executed
 #if TIMERCOUNT_ISR_CONFIG               // If a timer is checking tact, can be used to count time
     volatile unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
-#else
+
+#else     // If No ISR, tact.TimerCount(); is not used and counts are handled by millis();
     volatile unsigned long last_press_millis;
+
 #endif // TIMERCOUNT_ISR_CONFIG
 #endif // LONG_BUTTON_PRESS_CONFIG
 
@@ -81,10 +85,13 @@ private:
     static unsigned int tact_is_pressed;    // Keeps track of which button is pressed during poll
 #if LONG_BUTTON_PRESS_CONFIG
     static bool long_effect_done;           // Flags when a long press was executed
+
 #if TIMERCOUNT_ISR_CONFIG // If a timer is checking tact, can be used to count time
     static unsigned int long_press_counter; // Keeps count of how long the tact has been pressed for
-#else  //
+
+#else  // If No ISR, tact.TimerCount(); is not used and counts are handled by millis();
     static unsigned long last_press_millis;
+
 #endif // TIMERCOUNT_ISR_CONFIG
 #endif // LONG_BUTTON_PRESS_CONFIG
 #endif // SIMULTANEOUS_BUTTON_PRESSES_CONFIG

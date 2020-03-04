@@ -47,23 +47,23 @@ void tact::debounce()
         integrator++;
 
     if (integrator == 0)
-        btnOutput = 0;
+        now_debounced_input = 0;
     else if (integrator >= MAXIMUM)
     {
         integrator = MAXIMUM; // Defensive code if integrator got corrupted
-        btnOutput = 1;
+        now_debounced_input = 1;
     }
 }
 
-short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
+void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 {
 
     if (debounce_flag == NOT_DEBOUNCED)
     {
         if (!input_shift_used)
-            btnOutput = digitalRead(tact::pin);
+            now_debounced_input = digitalRead(tact::pin);
         else
-            btnOutput = ((input_shift_ptr->data & (1 << pin)) >> pin);
+            now_debounced_input = ((input_shift_ptr->data & (1 << pin)) >> pin);
     }
 
 /***************************************************************************
@@ -73,10 +73,10 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 * to the current polled button.
 ***************************************************************************/
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
-    if (btnOutput && !lastOutput && !tact_is_pressed)
+    if (now_debounced_input && !last_debounced_input && !tact_is_pressed)
     {
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
-    if (!btnOutput && lastOutput && !tact_is_pressed)
+    if (!now_debounced_input && last_debounced_input && !tact_is_pressed)
     {
 #endif
         tact_is_pressed += mID;
@@ -100,10 +100,10 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   ***************************************************************************/
 
 #if BUTTON_ACTIVE_STATE_CONFIG == 1
-    else if (lastOutput && !btnOutput && tact_is_pressed == mID)
+    else if (last_debounced_input && !now_debounced_input && tact_is_pressed == mID)
     {
 #elif BUTTON_ACTIVE_STATE_CONFIG == 0
-    else if (!lastOutput && btnOutput && tact_is_pressed == mID)
+    else if (!last_debounced_input && now_debounced_input && tact_is_pressed == mID)
     {
 #endif
 
@@ -140,7 +140,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #if TIMERCOUNT_ISR_CONFIG
     else if (tact_is_pressed && !long_effect_done && long_press_counter >= ITERATIONS_TO_LONG_PRESS_TRIGGER)
     {
-        Serial.println(long_press_counter);
+        //Serial.println(long_press_counter);
         long_press_counter = 0; // Stop counting, flag up
 #else
     else if (tact_is_pressed && !long_effect_done && (millis() - last_press_millis) >= LONG_PRESS_DELAY)
@@ -155,8 +155,7 @@ short tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
   * Mark the pressed button as read to prevent multiple readings
   ***************************************************************************/
 
-    lastOutput = btnOutput;
-    return tact::state;
+    last_debounced_input = now_debounced_input;
 }
 /*
 void tact::setFunctions(void args(), ...)
@@ -204,15 +203,15 @@ va_end(ap);
 
 void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
 {
-    Serial.println("long at start: ");
-    Serial.println((int)&long_ptr, HEX);
+    //Serial.println("long at start: ");
+   // Serial.println((int)&long_ptr, HEX);
 
     short_ptr = short_press_function;
-    Serial.println((int)&short_ptr, HEX);
+    //Serial.println((int)&short_ptr, HEX);
     release_ptr = release_press_function;
-    Serial.println((int)&release_ptr, HEX);
+    //Serial.println((int)&release_ptr, HEX);
     long_ptr = long_press_function;
-    Serial.println((int)&long_ptr, HEX);
+   // Serial.println((int)&long_ptr, HEX);
 }
 
 void tact::activate()

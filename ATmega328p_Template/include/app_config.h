@@ -6,8 +6,12 @@
 ##################################################################*/
 
 #define ledPin 5
-#define loadPin 4
 #define timerLedPin 7
+
+//74HC165 input shift register
+#define LOAD_CONNECTION 4
+#define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
+#define LOAD_PIN_PORT_STATE_REG PORTD
 
 /********** ST7789 OLED SPI pins ***********/
 #define TFT_CS 10 // define chip select pin
@@ -44,16 +48,7 @@
 #define DEBOUNCE_TIME 0.3
 #define SAMPLE_FREQUENCY 6
 
-/***************************************************************************
- * 74HC165 PINS
- * MISO   -   pin 12 to Q7 (pin9) of last shift register
- * SCK    -   pin 13 to CP (pin2) on registers
- * LOAD   -   digital OUTPUT pin of microcontroller to PL (pin1) on registers. 
- ***************************************************************************/
 
-#define LOAD_CONNECTION loadPin
-#define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
-#define LOAD_PIN_PORT_STATE_REG PORTD
 
 /***************************************************************************
  * Sleep
@@ -112,7 +107,7 @@ ADDONS : ADD HEADERS IF USING THOSE PARTS
 #define SCREEN_TEXT_ROWS SCREEN_HEIGHT / SCREEN_TEXT_PIXEL
 
 /***************************************************************************
- * 4x 20 LCD
+ * 4x20 LCD
  ***************************************************************************/
 
 #define FOUR_LCD_CONFIG 0
@@ -122,12 +117,13 @@ ADDONS : ADD HEADERS IF USING THOSE PARTS
 CONSTANT MACROS (DO NOT EDIT)
 ##################################################################*/
 
+//possible ISRs
 #define TIMER0_USED 1
 #define TIMER1_USED 2
 #define TIMER2_USED 3
 #define WDT_USED 4
 
-#define ITERATIONS_TO_LONG_PRESS_TRIGGER LONG_PRESS_DELAY / TACT_TIMER_PERIOD //calculates how many ISRs needed for long press
+#define ITERATIONS_TO_LONG_PRESS_TRIGGER LONG_PRESS_DELAY / TACT_TIMER_PERIOD //calculates how many ISR fires needed for long press
 #define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY)                            //debounce algorith max samples
 
 // End of File

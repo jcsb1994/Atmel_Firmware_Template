@@ -7,9 +7,10 @@ tact selectPin(3);
 
 ISR(WDT_vect)
 {
-  upPin.timerCount();
-  selectPin.timerCount();
-  //tact::timerCount(); // Very important to use this version when not using simultaneous presses (changes long press period)
+  //upPin.timerCount();
+  //selectPin.timerCount();
+  tact::timerCount(); // Very important to use this version when not using simultaneous presses (changes long press period)
+  Serial.println((int)&selectPin.long_ptr, HEX);
 }
 
 /*

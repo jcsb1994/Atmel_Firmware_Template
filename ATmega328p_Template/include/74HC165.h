@@ -9,7 +9,7 @@ void input_shift_reg_SPI_setup();
 /***************************************************************************
  * inputShiftSnapShot function
  * 
- * 1) Turn the loadPin HIGH for a millisecond, saves the state of the input pins
+ * 1) Turn the load Pin HIGH for a millisecond, saves the state of the input pins
  * at a given moment
  * 2) 1 empty byte is transfered for each shift register via the SPI protocol
  *    and received exchange byte is stored in the shift register's data member.
