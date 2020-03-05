@@ -1,6 +1,11 @@
 #ifndef MENU_H
 #define MENU_H
 
+/*
+create the menu instance
+when moving cursor, 
+*/
+
 class menu
 {
 
@@ -11,16 +16,12 @@ public:
     {
         return cursorPos;
     }
-    void setCursorPos(bool direction);
+    void moveCursor(bool direction);
 
     void refreshScreen()
     {
         refreshFlag = 0;
         printScreen();
-    }
-    void set_screen_to_print()
-    {
-
     }
 
 private:
@@ -36,29 +37,24 @@ private:
 #define UP 1
 #define DOWN 0
 
-void menu::setCursorPos(bool direction)
+void menu::moveCursor(bool direction)
 {
-    switch (direction)
+    if (direction)
     {
-    case UP:
         if (cursorPos < mRows)
             cursorPos++;
         else
             cursorPos = 0;
-        break;
-    case DOWN:
+    }
+    else
+    {
         if (cursorPos > mRows)
             cursorPos--;
         else
             cursorPos = mRows;
-        break;
-
-    default:
-        break;
     }
-    printCursor();  //could make it public for more flexibility
+
+    printCursor(); //could make it public for more flexibility
 }
-
-
 
 #endif
