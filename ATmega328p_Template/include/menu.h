@@ -3,7 +3,7 @@
 
 /*
 create the menu instance
-when moving cursor, 
+when moving cursor, call moveCursor()
 */
 
 class menu
@@ -16,28 +16,12 @@ public:
     {
         return cursorPos;
     }
-    void moveCursor(bool direction);
-
-    void refreshScreen()
-    {
-        refreshFlag = 0;
-        printScreen();
-    }
-
-private:
-    int mRows;
-    int cursorPos;
-    void printCursor();
-
-    bool refreshFlag;
-    void (*printScreen)();
-};
 
 //direction macros for setCursorPos
 #define UP 1
 #define DOWN 0
 
-void menu::moveCursor(bool direction)
+    void moveCursor(bool direction)
 {
     if (direction)
     {
@@ -56,5 +40,23 @@ void menu::moveCursor(bool direction)
 
     printCursor(); //could make it public for more flexibility
 }
+
+    void refreshScreen()
+    {
+        refreshFlag = 0;
+        printScreen();
+    }
+
+private:
+    int mRows;
+    int cursorPos;
+    void printCursor();
+
+    bool refreshFlag;
+    void (*printScreen)();
+};
+
+
+
 
 #endif

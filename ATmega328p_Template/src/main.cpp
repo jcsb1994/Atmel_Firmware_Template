@@ -1,13 +1,12 @@
 #include "main.h"
 
-
-menu myMenu(4);
-
 input_shift_register buttons_shift;
 
 tact upPin(3);
 tact selectPin(4);
 tact downPin(5);
+
+//menu myMenu(4);
 
 ISR(WDT_vect)
 {
@@ -37,9 +36,9 @@ void setup()
   pinMode(LedPin2, OUTPUT);
   pinMode(LedPin3, OUTPUT);
 
-  upPin.setFunctions(up_short, up_release, up_long);
-  selectPin.setFunctions(s_short, s_release, s_long);
-  downPin.setFunctions(t_short, t_release, t_long);
+  upPin.setFunctions(up_short, up_release);
+  selectPin.setFunctions(s_short, s_release);
+  downPin.setFunctions(t_short, t_release);
 
   input_shift_reg_SPI_setup();
   WDT_setup();

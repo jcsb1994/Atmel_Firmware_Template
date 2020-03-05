@@ -159,67 +159,44 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     }
 #endif
 
-        /***************************************************************************
+    /***************************************************************************
   * Mark the pressed button as read to prevent multiple readings
   ***************************************************************************/
 
-        tact::last_debounced_input = tact::now_debounced_input;
-    }
-    /*
-void tact::setFunctions(void args(), ...)
-
-{
-
-va_list ap;
-
-va_start(ap, args);
-
-#if SHORT_BUTTON_PRESS_CONFIG
-Serial.println(va_arg(ap, void (*)()));
-    short_ptr = va_arg(ap, void (*)());
-#endif
-#if BUTTON_RELEASE_CONFIG   
-    release_ptr = va_arg(ap, void (*)());
-#endif
-#if LONG_BUTTON_PRESS_CONFIG
-    long_ptr = va_arg(ap, void (*)());
-#endif
-
-va_end(ap);
-
+    tact::last_debounced_input = tact::now_debounced_input;
 }
-*/
 
-    /* #if SHORT_BUTTON_PRESS_CONFIG
-    void short_press_function()
-    #if  BUTTON_RELEASE_CONFIG | LONG_BUTTON_PRESS_CONFIG
-    ,
-    #endif
-    #endif
+    void tact::setFunctions(
+#if SHORT_BUTTON_PRESS_CONFIG
+        void short_press_function(void)
+#if BUTTON_RELEASE_CONFIG || LONG_BUTTON_PRESS_CONFIG
+        ,
+#endif
+#endif
 
-    #if BUTTON_RELEASE_CONFIG
-    void release_press_function()
-    #if LONG_BUTTON_PRESS_CONFIG
-    ,
-    #endif
-    #endif
+#if BUTTON_RELEASE_CONFIG
+        void release_press_function(void)
+#if LONG_BUTTON_PRESS_CONFIG
+        ,
+#endif
+#endif
 
-    #if LONG_BUTTON_PRESS_CONFIG
-    void long_press_function()
-    #endif
-)*/
-
-    void tact::setFunctions(void short_press_function(), void release_press_function(), void long_press_function())
+#if LONG_BUTTON_PRESS_CONFIG
+        void long_press_function(void))
+#endif
+        )
     {
-        //Serial.println("long at start: ");
-        // Serial.println((int)&long_ptr, HEX);
-
+#if SHORT_BUTTON_PRESS_CONFIG
         short_ptr = short_press_function;
-        //Serial.println((int)&short_ptr, HEX);
+#endif
+
+#if BUTTON_RELEASE_CONFIG
         release_ptr = release_press_function;
-        //Serial.println((int)&release_ptr, HEX);
-        tact::long_ptr = long_press_function;
-        // Serial.println((int)&long_ptr, HEX);
+#endif
+
+#if LONG_BUTTON_PRESS_CONFIG
+        long_ptr = long_press_function;
+#endif
     }
 
     void tact::activate()

@@ -4,7 +4,6 @@
 
 void sleep_setup()
 {
-
     SMCR |= (1 << 2);   //power down mode
     SMCR |= 1;          //enable sleep
     ADCSRA |= (1 << 7); //Disable ADC (saves additional power)
@@ -12,7 +11,6 @@ void sleep_setup()
 
 void activate_sleep()
 {
-
     MCUCR |= (3 << 5);                      //set both BODS and BODSE at the same time
     MCUCR = (MCUCR & ~(1 << 5)) | (1 << 6); //then set the BODS bit and clear the BODSE bit at the same time
     //ADCSRA |= (1 << 7);                      //Disable ADC (saves additional power)
