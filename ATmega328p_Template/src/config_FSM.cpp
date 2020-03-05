@@ -1,4 +1,1 @@
-#include "FSM.h"
-
-FSM myMachine();
-
+#include "FSM_config.h"

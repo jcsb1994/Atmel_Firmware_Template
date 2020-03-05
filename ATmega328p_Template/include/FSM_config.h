@@ -7,14 +7,16 @@ class FSM
 {
 public:
     FSM() {}
+
     enum events
     {
-        go_up,
-        go_down,
-        select
+        increment,
+        decrement,
+        select,
+        RFID_ON
     };
 
-    void getEvent(int incomingEvent)
+    void setEvent(int incomingEvent)    //used as output for tact switches
     {
         incoming_event = incomingEvent;
     }
@@ -33,7 +35,7 @@ private:
         switch (incoming_event)
         {
         case events::select:
-        /*    switch (menu::getCursorPos)
+            /*    switch (menu::getCursorPos)
             {
                 break;
             
