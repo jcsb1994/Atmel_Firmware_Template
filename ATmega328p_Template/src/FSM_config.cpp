@@ -6,7 +6,8 @@ FSM myFSM;
     List all events in your FSM here
 ####################################################################################################*/
 
-void FSM::init() {
+void FSM::init()
+{
     myFSM.setState(INIT_stateHandler);
     print_init_page();
 }
@@ -36,18 +37,24 @@ void INIT_stateHandler()
 
         default:
             break;
-            
         }
     }
 }
 
-
 void SETUP_stateHandler()
 {
+    switch (myFSM.getEvent())
+    {
+    case events::back:
+        print_init_page();
+        myFSM.setState(INIT_stateHandler);
+        break;
 
+    default:
+        break;
+    }
 }
 
 void MEASURING_stateHandler()
 {
-
 }

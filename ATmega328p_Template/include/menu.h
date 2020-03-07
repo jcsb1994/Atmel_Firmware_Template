@@ -17,6 +17,10 @@ class menu
 public:
     menu(int rows) : mRows(rows) {}
 
+    void init() {
+        printCursor();
+    }
+
     int getCursorPos()
     {
         return cursorPos;

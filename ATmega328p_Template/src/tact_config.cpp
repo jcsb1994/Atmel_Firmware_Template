@@ -1,4 +1,4 @@
-#include "app_functions.h"
+#include "functions_config.h"
 
 /* Create functions to link to your tact instances here */
 
@@ -53,10 +53,11 @@ void t_long()
 
 void left_s()
 {
+  digitalWrite(LedPin3, HIGH);
   myFSM.setEvent(events::back);
 }
 
 void left_r()
 {
-
+digitalWrite(LedPin3, LOW);
 }

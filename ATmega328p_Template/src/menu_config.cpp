@@ -28,6 +28,7 @@ void menu::printCursor()
 
 void print_init_page()
 {
+    lcd.clear();
     lcd.setCursor(CURSOR_SIZE, 0);
     lcd.print("Setup");
     lcd.setCursor(CURSOR_SIZE, 1);
@@ -38,12 +39,14 @@ void print_init_page()
 
 void print_setup_page()
 {
+    lcd.clear();
     lcd.setCursor(CURSOR_SIZE, 0);
     lcd.print("Test dist: ");
 };
 
 void print_measuring_page()
 {
+    lcd.clear();
     lcd.setCursor(CURSOR_SIZE, 0);
     lcd.print("Stop measuring");
     lcd.setCursor(5, 1);

@@ -16,7 +16,7 @@
 #include "menu.h"
 #include "FSM.h"
 
-#include "app_functions.h"  //Includes application's custom functions for FSM, menu and tact
+#include "functions_config.h"  //Includes application's custom functions for FSM, menu and tact
 
 // Atmega328p additional operations
 #include "Timers.h"

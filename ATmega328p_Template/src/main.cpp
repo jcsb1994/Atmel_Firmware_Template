@@ -5,7 +5,7 @@ input_shift_register buttons_shift;
 tact upPin(4);
 tact selectPin(3);
 tact downPin(5);
-tact leftPin(6);
+tact leftPin(7);
 
 
 
@@ -47,6 +47,7 @@ void setup()
 
   lcd_setup();
   myFSM.init();
+  myMenu.init();
 }
 
 void loop()
