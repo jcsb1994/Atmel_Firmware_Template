@@ -1,6 +1,7 @@
 #ifndef APP_CONFIG_H
 #define APP_CONFIG_H
 
+
 /*##################################################################
 * USED PINS ON THE ATMEGA328P
 ##################################################################*/
@@ -10,7 +11,7 @@
 #define LedPin3 10
 
 //74HC165 input shift register
-#define LOAD_CONNECTION 6
+#define LOAD_CONNECTION 11
 #define LOAD_PIN_PORT_DATA_DIRECTION_REG DDRD
 #define LOAD_PIN_PORT_STATE_REG PORTD
 
@@ -18,6 +19,7 @@
 #define TFT_CS 10 // define chip select pin
 #define TFT_DC 9  // define data/command pin
 #define TFT_RST 8 // define reset pin, or set to -1 and connect to Arduino RESET pin
+
 
 /*##################################################################
 * BASIC APP CONFIG
@@ -94,8 +96,7 @@ ADDONS : ADD HEADERS IF USING THOSE PARTS
 /***************************************************************************
  * ST7789 OLED display
  ***************************************************************************/
-
-#define ST7789_CONFIG 1
+#define ST7789_CONFIG 0
 
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 240
@@ -112,7 +113,7 @@ ADDONS : ADD HEADERS IF USING THOSE PARTS
  ***************************************************************************/
 
 #define FOUR_LCD_CONFIG 1
-#define LCD_I2C_ADDR 0x27
+#define LCD_I2C_ADDR 0x27 //0x3F
 
 /*##################################################################
 CONSTANT MACROS (DO NOT EDIT)

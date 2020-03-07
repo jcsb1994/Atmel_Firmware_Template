@@ -1,11 +1,16 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include "main.h"
+
 /*
 create the menu instance
 when moving cursor, call moveCursor()
 */
 
+/*####################################################################################################
+    Menu::  DO NOT EDIT
+####################################################################################################*/
 class menu
 {
 
@@ -25,17 +30,17 @@ public:
 {
     if (direction)
     {
-        if (cursorPos < mRows)
+        if (cursorPos < mRows-1)
             cursorPos++;
         else
             cursorPos = 0;
     }
     else
     {
-        if (cursorPos > mRows)
+        if (cursorPos > 0)
             cursorPos--;
         else
-            cursorPos = mRows;
+            cursorPos = mRows-1;
     }
 
     printCursor(); //could make it public for more flexibility
@@ -56,7 +61,9 @@ private:
     void (*printScreen)();
 };
 
+//Menu Instance
+extern menu myMenu;
 
 
 
-#endif
+#endif  //MENU_H

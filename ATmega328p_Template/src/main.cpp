@@ -2,11 +2,12 @@
 
 input_shift_register buttons_shift;
 
-tact upPin(3);
-tact selectPin(4);
+tact upPin(4);
+tact selectPin(3);
 tact downPin(5);
+tact leftPin(6);
 
-//menu myMenu(4);
+
 
 ISR(WDT_vect)
 {
@@ -26,8 +27,6 @@ ISR(TIMER1_COMPA_vect)
 }
 */
 
-
-
 void setup()
 {
   Serial.begin(9600);
@@ -39,30 +38,33 @@ void setup()
   upPin.setFunctions(up_short, up_release);
   selectPin.setFunctions(s_short, s_release);
   downPin.setFunctions(t_short, t_release);
+  leftPin.setFunctions(left_s, left_r);
 
   input_shift_reg_SPI_setup();
   WDT_setup();
-
   //timer1_setup();
   sleep_setup();
-  //tft_setup();
-  //lcd_setup();
+
+  lcd_setup();
+  myFSM.init();
 }
 
 void loop()
 {
-  //myMenu.setCursor(UP);
-
+  myFSM.doState();
+  
   shift_reg_snapshot();
   buttons_shift.data = transfer_shift_reg_data();
 
   upPin.poll(NOT_DEBOUNCED); // Do not debounce if using sleep!
   selectPin.poll(NOT_DEBOUNCED);
   downPin.poll(NOT_DEBOUNCED);
+  leftPin.poll(NOT_DEBOUNCED);
 
   upPin.activate();
   selectPin.activate();
   downPin.activate();
+  leftPin.activate();
 
   //activate_sleep();
 }

@@ -1,44 +1,30 @@
-#include "tact_functions.h"
+#include "app_functions.h"
 
 /* Create functions to link to your tact instances here */
 
-void empty() {}
+// Up button
 
 void up_short()
 {
-  //menu::setCursor(UP);
+  myMenu.moveCursor(DOWN);
 
-  digitalWrite(ledPin, HIGH);
-  Serial.println("short");
-  delay(50);
-  digitalWrite(ledPin, LOW);
-  delay(50);
   digitalWrite(ledPin, HIGH);
 }
 void up_release()
 {
   digitalWrite(ledPin, LOW);
 }
+
 void up_long()
 {
-  digitalWrite(ledPin, HIGH);
-  delay(50);
-  digitalWrite(ledPin, LOW);
-  delay(50);
-  digitalWrite(ledPin, HIGH);
-  delay(50);
-  digitalWrite(ledPin, LOW);
-  delay(50);
-  digitalWrite(ledPin, LOW);
-  delay(50);
-  digitalWrite(ledPin, HIGH);
-  delay(50);
-  digitalWrite(ledPin, LOW);
 }
+
+// Select Button
 
 void s_short()
 {
   digitalWrite(LedPin2, HIGH);
+  myFSM.setEvent(events::select);
 }
 void s_release()
 {
@@ -46,28 +32,14 @@ void s_release()
 }
 void s_long()
 {
-  digitalWrite(LedPin2, HIGH);
-  delay(50);
-  digitalWrite(LedPin2, LOW);
-  delay(50);
-  digitalWrite(LedPin2, HIGH);
-  delay(50);
-  digitalWrite(LedPin2, LOW);
-  delay(50);
-  digitalWrite(LedPin2, HIGH);
-  delay(50);
-  digitalWrite(LedPin2, LOW);
-  delay(50);
-  digitalWrite(LedPin2, HIGH);
-  delay(50);
-  digitalWrite(LedPin2, LOW);
-  delay(50);
-  digitalWrite(LedPin2, HIGH);
 }
+
+// Down button
 
 void t_short()
 {
   digitalWrite(LedPin3, HIGH);
+  myMenu.moveCursor(UP);
 }
 void t_release()
 {
@@ -75,11 +47,16 @@ void t_release()
 }
 void t_long()
 {
-  digitalWrite(LedPin3, HIGH);
-  delay(50);
-  digitalWrite(LedPin3, LOW);
-  delay(50);
-  digitalWrite(LedPin3, HIGH);
-  delay(50);
-  digitalWrite(LedPin3, LOW);
+}
+
+// Left Button
+
+void left_s()
+{
+  myFSM.setEvent(events::back);
+}
+
+void left_r()
+{
+
 }
