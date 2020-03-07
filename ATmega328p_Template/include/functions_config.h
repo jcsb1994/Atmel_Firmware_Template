@@ -42,7 +42,7 @@ void left_r();
 void print_init_page();
 
 
-void print_measuring_page();
+void print_wait_for_rfid_page();
 
 void print_setup_page();
 
@@ -54,10 +54,11 @@ enum events
     increment,
     decrement,
     select,
-    RFID_ON,
-    back
-};
+    RFID_detected,
+    back,
+    tof_detected,
 
+};
 
 /*####################################################################################################
     State Machine (FSM) state handlers (create a function for each) **in FSM config cpp file
@@ -69,6 +70,6 @@ void SETUP_stateHandler();
 
 void BT_PAIR_stateHandler();
 
-void MEASURING_stateHandler();
+void WAIT_FOR_RFID_stateHandler();
 
 #endif

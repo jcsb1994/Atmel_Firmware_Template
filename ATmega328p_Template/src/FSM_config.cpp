@@ -2,8 +2,10 @@
 
 FSM myFSM;
 
+// FSM events must be listed in functions_config.h
+
 /*####################################################################################################
-    List all events in your FSM here
+    setup which initial state for the State machine
 ####################################################################################################*/
 
 void FSM::init()
@@ -15,6 +17,12 @@ void FSM::init()
 /*####################################################################################################
     create your state handling functions for your FSM here
 ####################################################################################################*/
+
+/***************************************************************************
+ * States:
+ * INIT, SETUP, WAIT_FOR_RFID, TOF, 
+ * 
+ ***************************************************************************/
 
 void INIT_stateHandler()
 {
@@ -31,8 +39,8 @@ void INIT_stateHandler()
             break;
 
         case INIT_START_POS:
-            void print_measuring_page();
-            myFSM.setState(MEASURING_stateHandler);
+            void print_wait_for_rfid_page();
+            myFSM.setState(WAIT_FOR_RFID_stateHandler);
             break;
 
         default:
@@ -55,6 +63,6 @@ void SETUP_stateHandler()
     }
 }
 
-void MEASURING_stateHandler()
+void WAIT_FOR_RFID_stateHandler()
 {
 }

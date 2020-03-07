@@ -54,3 +54,4 @@ void print_measuring_page()
     lcd.setCursor(7, 2);
     lcd.print("patients..");
 }
+
