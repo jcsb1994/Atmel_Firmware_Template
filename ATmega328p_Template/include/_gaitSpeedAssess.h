@@ -1,3 +1,5 @@
+
+
 #ifndef GAIT_SPEED_ASSESS_H
 #define GAIT_SPEED_ASSESS_H
 
@@ -11,19 +13,13 @@ private:
 
 
 public:
-    gaitSpeedAssess(/* args */);
-    ~gaitSpeedAssess();
+    gaitSpeedAssess() {}
+
 };
 
-gaitSpeedAssess::gaitSpeedAssess(/* args */)
-{
-}
-
-gaitSpeedAssess::~gaitSpeedAssess()
-{
-}
 
 extern gaitSpeedAssess gait_assessment;
 
 
 #endif
+

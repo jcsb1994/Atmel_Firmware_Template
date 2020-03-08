@@ -14,7 +14,7 @@ ISR(WDT_vect)
   //upPin.timerCount();
   //selectPin.timerCount();
   //tact::timerCount(); // Very important to use this version when not using simultaneous presses (changes long press period)
-  //Serial.println((int)&selectPin.long_ptr, HEX);
+  //Serial.println((int)&selectPin.hold_ptr, HEX);
 }
 
 /*
@@ -35,10 +35,10 @@ void setup()
   pinMode(LedPin2, OUTPUT);
   pinMode(LedPin3, OUTPUT);
 
-  upPin.setFunctions(up_short, up_release);
-  selectPin.setFunctions(s_short, s_release);
-  downPin.setFunctions(t_short, t_release);
-  leftPin.setFunctions(left_s, left_r);
+  upPin.setFunctions(up_short, up_release, up_long);
+  selectPin.setFunctions(s_short, s_release, s_long);
+  downPin.setFunctions(down_s, down_r, down_h);
+  leftPin.setFunctions(left_s, left_r, left_h);
 
   input_shift_reg_SPI_setup();
   WDT_setup();

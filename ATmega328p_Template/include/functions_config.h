@@ -9,28 +9,33 @@
 
 void empty();
 
+// Up button
 void up_short();
 
 void up_release();
 
 void up_long();
 
+// Select button
 void s_short();
 
 void s_release();
 
 void s_long();
 
-void t_short();
+// Down button
+void down_s();
 
-void t_release();
+void down_r();
 
-void t_long();
+void down_h();
 
 // Left button
 void left_s();
 
 void left_r();
+
+void left_h();
 
 /*####################################################################################################
     Pages to print (create a function for each) **in menu config cpp file

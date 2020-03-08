@@ -195,7 +195,7 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG
-        long_ptr = long_press_function;
+        hold_ptr = long_press_function;
 #endif
     }
 
@@ -203,11 +203,11 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     {
         if (state)
         {
-            //Serial.println((int)&long_ptr, HEX);
+            //Serial.println((int)&hold_ptr, HEX);
             switch (tact::state)
             {
             case LONG_EFFECT_REQUIRED:
-                tact::long_ptr();
+                tact::hold_ptr();
                 break;
 
             case SHORT_EFFECT_REQUIRED:

@@ -33,7 +33,7 @@
 
 #define SHORT_BUTTON_PRESS_CONFIG 1        // 1 to turn ON functionality for short button presses
 #define BUTTON_RELEASE_CONFIG 1             // 1 to turn ON functionality for button releases
-#define LONG_BUTTON_PRESS_CONFIG 0       // 1 to turn ON functionality for long button presses
+#define LONG_BUTTON_PRESS_CONFIG 1       // 1 to turn ON functionality for long button presses
 #define RELEASE_AFTER_LONG_EFFECT_CONFIG 1 // 1 will trigger a release effect even after long press effects occured
 #define SIMULTANEOUS_BUTTON_PRESSES_CONFIG 0
 

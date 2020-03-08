@@ -54,7 +54,7 @@ public:
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG
-        void long_press_function(void))
+        void long_press_function(void)
 #endif
         );
 
@@ -77,7 +77,7 @@ private:
     input_shift_register *input_shift_ptr;
 
     // Pointers to tact effect functions
-    void (*long_ptr)();
+    void (*hold_ptr)();
     void (*short_ptr)();
     void (*release_ptr)();
 

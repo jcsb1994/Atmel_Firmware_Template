@@ -36,16 +36,16 @@ void s_long()
 
 // Down button
 
-void t_short()
+void down_s()
 {
   digitalWrite(LedPin3, HIGH);
   myMenu.moveCursor(UP);
 }
-void t_release()
+void down_r()
 {
   digitalWrite(LedPin3, LOW);
 }
-void t_long()
+void down_h()
 {
 }
 
