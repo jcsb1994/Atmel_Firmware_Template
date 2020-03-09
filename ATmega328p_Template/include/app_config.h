@@ -31,11 +31,11 @@
 
 #define BUTTON_ACTIVE_STATE_CONFIG 1 // 1 for active HIGH buttons or 0 for active low
 
-#define SHORT_BUTTON_PRESS_CONFIG 1        // 1 to turn ON functionality for short button presses
+#define SHORT_BUTTON_PRESS_CONFIG 0        // 1 to turn ON functionality for short button presses
 #define BUTTON_RELEASE_CONFIG 1             // 1 to turn ON functionality for button releases
 #define LONG_BUTTON_PRESS_CONFIG 1       // 1 to turn ON functionality for long button presses
-#define RELEASE_AFTER_LONG_EFFECT_CONFIG 1 // 1 will trigger a release effect even after long press effects occured
-#define SIMULTANEOUS_BUTTON_PRESSES_CONFIG 0
+#define RELEASE_AFTER_LONG_EFFECT_CONFIG 0 // 1 will trigger a release effect even after long press effects occured
+#define SIMULTANEOUS_BUTTON_PRESSES_CONFIG 1
 
 /* sleep stops millis() so if no timer is used and sleep is used, long press timings won't fit */
 

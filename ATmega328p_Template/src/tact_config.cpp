@@ -4,60 +4,56 @@
 
 // Up button
 
-void up_short()
+void up_r()
 {
   myMenu.moveCursor(DOWN);
-
-  digitalWrite(ledPin, HIGH);
-}
-void up_release()
-{
-  digitalWrite(ledPin, LOW);
 }
 
-void up_long()
+void up_h()
 {
 }
 
 // Select Button
 
-void s_short()
+void sel_r()
 {
-  digitalWrite(LedPin2, HIGH);
   myFSM.setEvent(events::select);
 }
-void s_release()
-{
-  digitalWrite(LedPin2, LOW);
-}
-void s_long()
+
+void sel_h()
 {
 }
 
 // Down button
 
-void down_s()
-{
-  digitalWrite(LedPin3, HIGH);
-  myMenu.moveCursor(UP);
-}
 void down_r()
 {
-  digitalWrite(LedPin3, LOW);
+  myMenu.moveCursor(UP);
 }
+
 void down_h()
 {
 }
 
 // Left Button
 
-void left_s()
+void left_r()
 {
-  digitalWrite(LedPin3, HIGH);
+  myFSM.setEvent(events::decrement);
+}
+
+void left_h()
+{
   myFSM.setEvent(events::back);
 }
 
-void left_r()
+// Right Button
+
+void ri_r()
 {
-digitalWrite(LedPin3, LOW);
+  myFSM.setEvent(events::increment);
+}
+
+void ri_h()
+{
 }

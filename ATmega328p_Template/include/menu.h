@@ -17,9 +17,9 @@ class menu
 public:
     menu(int rows) : mRows(rows) {}
 
-    void init() {
-        printCursor();
-    }
+
+    void printCursor();
+    
 
     int getCursorPos()
     {
@@ -49,20 +49,20 @@ public:
 
     printCursor(); //could make it public for more flexibility
 }
+    void setCurrentPage(void current_page_print()) {
+        currentPage = current_page_print;
+    }
 
-    void refreshScreen()
+    void refreshPage()
     {
-        refreshFlag = 0;
-        printScreen();
+        currentPage();
     }
 
 private:
     int mRows;
     int cursorPos;
-    void printCursor();
 
-    bool refreshFlag;
-    void (*printScreen)();
+    void (*currentPage)();
 };
 
 //Menu Instance

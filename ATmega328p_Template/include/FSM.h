@@ -18,7 +18,10 @@ public:
 
     int getEvent() //used as output for tact switches
     {
-        return incoming_event;
+        //if(incoming_event)Serial.print("ev "), Serial.println(incoming_event);
+        int event = incoming_event;
+        incoming_event = 0;
+        return event;
     }
 
     void setEvent(int incomingEvent) //used as output for tact switches

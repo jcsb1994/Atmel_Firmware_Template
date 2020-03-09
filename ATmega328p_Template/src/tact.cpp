@@ -91,7 +91,7 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 
 #if SHORT_BUTTON_PRESS_CONFIG == 1
         tact::state = SHORT_EFFECT_REQUIRED;
-        *pressOutput = (mID << 2) + state;
+        //*pressOutput = (mID << 2) + state;
 
 #endif
     }
@@ -120,8 +120,8 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
 #if LONG_BUTTON_PRESS_CONFIG == 1 && !RELEASE_AFTER_LONG_EFFECT_CONFIG
             if (!long_effect_done) //if there was no long press. If there was, releasing will not trigger another effect
 #endif
-                tact::state = RELEASE_EFFECT_REQUIRED,
-                *pressOutput = (mID << 2) + state;
+                tact::state = RELEASE_EFFECT_REQUIRED;
+                //*pressOutput = (mID << 2) + state;
         }
 #endif
 
@@ -153,8 +153,8 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     {
 #endif
 
-        tact::state = LONG_EFFECT_REQUIRED;
-        *pressOutput = (mID << 2) + state;
+        state = LONG_EFFECT_REQUIRED;
+        //*pressOutput = (mID << 2) + state;
         long_effect_done++;
     }
 #endif
@@ -166,69 +166,71 @@ void tact::poll(bool debounce_flag) //accepts DEBOUNCED or NOT_DEBOUNCED
     tact::last_debounced_input = tact::now_debounced_input;
 }
 
-    void tact::setFunctions(
+void tact::setFunctions(
 #if SHORT_BUTTON_PRESS_CONFIG
-        void short_press_function(void)
+    void short_press_function(void)
 #if BUTTON_RELEASE_CONFIG || LONG_BUTTON_PRESS_CONFIG
         ,
 #endif
 #endif
 
 #if BUTTON_RELEASE_CONFIG
-        void release_press_function(void)
+    void release_press_function(void)
 #if LONG_BUTTON_PRESS_CONFIG
         ,
 #endif
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG
-        void long_press_function(void))
+    void long_press_function(void)
 #endif
-        )
-    {
+)
+{
 #if SHORT_BUTTON_PRESS_CONFIG
-        short_ptr = short_press_function;
+    short_ptr = short_press_function;
 #endif
 
 #if BUTTON_RELEASE_CONFIG
-        release_ptr = release_press_function;
+    release_ptr = release_press_function;
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG
-        hold_ptr = long_press_function;
+    hold_ptr = long_press_function;
 #endif
-    }
+}
 
-    void tact::activate()
+void tact::activate()
+{
+    if (state)
     {
-        if (state)
+        //Serial.println((int)&hold_ptr, HEX);
+        switch (state)
         {
-            //Serial.println((int)&hold_ptr, HEX);
-            switch (tact::state)
-            {
-            case LONG_EFFECT_REQUIRED:
-                tact::hold_ptr();
-                break;
+        case LONG_EFFECT_REQUIRED:
+            //Serial.print("ID "),Serial.println(mID);
+            hold_ptr();
+            break;
 
-            case SHORT_EFFECT_REQUIRED:
-                short_ptr();
-                break;
+        case SHORT_EFFECT_REQUIRED:
+            short_ptr();
+            break;
 
-            case RELEASE_EFFECT_REQUIRED:
-                release_ptr();
-                break;
+        case RELEASE_EFFECT_REQUIRED:
+            release_ptr();
+            //Serial.println(mID);
+            break;
 
-            default:
-                break;
-            }
-            tact::state = 0;
+        default:
+            break;
         }
+        tact::state = 0;
     }
+}
 
 #if LONG_BUTTON_PRESS_CONFIG
-    void tact::timerCount()
-    {
-        if (tact_is_pressed && !long_effect_done)
-            long_press_counter++;
-    }
+void tact::timerCount()
+{
+    if (tact_is_pressed && !long_effect_done)
+        long_press_counter++;
+}
 #endif

@@ -5,14 +5,16 @@ input_shift_register buttons_shift;
 tact upPin(4);
 tact selectPin(3);
 tact downPin(5);
+tact rightPin(6);
 tact leftPin(7);
-
-
 
 ISR(WDT_vect)
 {
-  //upPin.timerCount();
-  //selectPin.timerCount();
+  upPin.timerCount();
+  selectPin.timerCount();
+  leftPin.timerCount();
+  rightPin.timerCount();
+  downPin.timerCount();
   //tact::timerCount(); // Very important to use this version when not using simultaneous presses (changes long press period)
   //Serial.println((int)&selectPin.hold_ptr, HEX);
 }
@@ -35,10 +37,11 @@ void setup()
   pinMode(LedPin2, OUTPUT);
   pinMode(LedPin3, OUTPUT);
 
-  upPin.setFunctions(up_short, up_release, up_long);
-  selectPin.setFunctions(s_short, s_release, s_long);
-  downPin.setFunctions(down_s, down_r, down_h);
-  leftPin.setFunctions(left_s, left_r, left_h);
+  leftPin.setFunctions(left_r, left_h);
+  upPin.setFunctions(up_r, up_h);
+  selectPin.setFunctions(sel_r, sel_h);
+  downPin.setFunctions(down_r, down_h);
+  rightPin.setFunctions(ri_r, ri_h);
 
   input_shift_reg_SPI_setup();
   WDT_setup();
@@ -47,26 +50,26 @@ void setup()
 
   lcd_setup();
   myFSM.init();
-  myMenu.init();
 }
 
 void loop()
 {
   myFSM.doState();
-  
+
   shift_reg_snapshot();
   buttons_shift.data = transfer_shift_reg_data();
 
-  upPin.poll(NOT_DEBOUNCED); // Do not debounce if using sleep!
   selectPin.poll(NOT_DEBOUNCED);
   downPin.poll(NOT_DEBOUNCED);
   leftPin.poll(NOT_DEBOUNCED);
+  upPin.poll(NOT_DEBOUNCED); // Do not debounce if using sleep!
+  rightPin.poll(NOT_DEBOUNCED);
 
-  upPin.activate();
   selectPin.activate();
   downPin.activate();
   leftPin.activate();
+  upPin.activate();
+  rightPin.activate();
 
   //activate_sleep();
-  
 }
