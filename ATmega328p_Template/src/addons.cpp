@@ -70,7 +70,7 @@ void lcd_setup()
   //lcd.setBacklight(LED_ON);  //turn on backlight
   lcd.backlight();     //Backlight ON if under program control
   lcd.setCursor(0, 0); //character 1 on line 0
-                       //lcd.print("Dummie code");
+  //lcd.print("Dummie code");
 }
 
 #endif
