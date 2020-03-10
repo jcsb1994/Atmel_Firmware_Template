@@ -3,6 +3,12 @@
 
 #include "main.h"
 
+/*
+Some data needs to be shared via bluetooth with both devices. It is the case for: exact distance and test type
+
+RFID triggers tof, bluetooth used to check if the other device  has an ungoing (identified this tag first) reading and time is stored as start time if not, else as end time
+*/
+
 class gaitSpeedAssess
 {
 private:

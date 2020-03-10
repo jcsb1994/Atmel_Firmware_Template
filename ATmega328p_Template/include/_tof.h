@@ -25,4 +25,9 @@ public:
   }
 };
 
+extern VL53L1X sensor;
+extern TOF mySensor;
+
+
+
 #endif

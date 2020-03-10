@@ -31,7 +31,7 @@ ISR(TIMER1_COMPA_vect)
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(9600); //Serial.begin(38400); // Speed to comm with HC05
 
   pinMode(ledPin, OUTPUT);
   pinMode(LedPin2, OUTPUT);

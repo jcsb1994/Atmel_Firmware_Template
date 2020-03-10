@@ -131,5 +131,15 @@ void WAIT_FOR_RFID_stateHandler()
 
 void TOF_stateHandler()
 {
-    //run a measurement
+    mySensor.debounce();    // Read TOF sensor
+        switch (myFSM.getEvent())
+    {
+    case events::back:
+        print_init_page();
+        myFSM.setState(INIT_stateHandler);
+        break;
+
+    default:
+        break;
+    }
 }
