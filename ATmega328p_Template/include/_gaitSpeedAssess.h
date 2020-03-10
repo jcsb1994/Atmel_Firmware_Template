@@ -1,5 +1,3 @@
-
-
 #ifndef GAIT_SPEED_ASSESS_H
 #define GAIT_SPEED_ASSESS_H
 

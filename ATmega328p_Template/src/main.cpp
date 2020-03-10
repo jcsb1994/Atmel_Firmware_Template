@@ -47,7 +47,6 @@ void setup()
   WDT_setup();
   //timer1_setup();
   sleep_setup();
-
   lcd_setup();
   myFSM.init();
 }
