@@ -65,3 +65,5 @@ void TOF::init()
 VL53L1X sensor;
 TOF mySensor(sensor);
 
+VL53L1X sensor2;
+TOF finalSensor(sensor2);

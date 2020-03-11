@@ -28,6 +28,7 @@ public:
 extern VL53L1X sensor;
 extern TOF mySensor;
 
-
+extern VL53L1X sensor2;
+extern TOF finalSensor;
 
 #endif

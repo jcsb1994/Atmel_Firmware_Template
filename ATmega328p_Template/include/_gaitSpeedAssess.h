@@ -40,4 +40,5 @@ public:
 
 extern gaitSpeedAssess gait_assessment;
 
+
 #endif

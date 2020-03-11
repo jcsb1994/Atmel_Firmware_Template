@@ -132,6 +132,11 @@ void WAIT_FOR_RFID_stateHandler()
 void TOF_stateHandler()
 {
     mySensor.debounce();    // Read TOF sensor
+    finalSensor.debounce();     // Read 2nd
+    // If we flag, do not debounce the flagged sensor
+    // the 1st flag sets start time, the second is ending time.
+    if(mySensor.getStatus()) 
+    if(finalSensor.getStatus()) 
         switch (myFSM.getEvent())
     {
     case events::back:
@@ -143,3 +148,4 @@ void TOF_stateHandler()
         break;
     }
 }
+
