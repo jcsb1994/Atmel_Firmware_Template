@@ -48,6 +48,7 @@ void setup()
   //timer1_setup();
   sleep_setup();
   lcd_setup();
+  tof_setup();
   myFSM.init();
 }
 
@@ -55,8 +56,8 @@ void loop()
 {
   myFSM.doState();
 
-  shift_reg_snapshot();
-  buttons_shift.data = transfer_shift_reg_data();
+  //shift_reg_snapshot();
+  //buttons_shift.data = transfer_shift_reg_data();
 
   selectPin.poll(NOT_DEBOUNCED);
   downPin.poll(NOT_DEBOUNCED);

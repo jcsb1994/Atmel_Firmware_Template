@@ -32,7 +32,7 @@ void INIT_stateHandler()
         {
         case INIT_SETUP_POS:
             print_setup_page();
-            myMenu.setCurrentPage(print_setup_page);   // Used because refreshPage() is used in this state
+            myMenu.setCurrentPage(print_setup_page); // Used because refreshPage() is used in this state
             myFSM.setState(SETUP_stateHandler);
             break;
 
@@ -124,6 +124,10 @@ void WAIT_FOR_RFID_stateHandler()
         myFSM.setState(TOF_stateHandler);
         break;
 
+    case events::select: // Pressing select gets you into continuous reading
+        myFSM.setEvent(events::RFID_detected);
+        break;
+
     default:
         break;
     }
@@ -131,13 +135,27 @@ void WAIT_FOR_RFID_stateHandler()
 
 void TOF_stateHandler()
 {
+    //   if(!mySensor.flag)
     mySensor.debounce();    // Read TOF sensor
-    finalSensor.debounce();     // Read 2nd
+    finalSensor.debounce(); // Read 2nd
     // If we flag, do not debounce the flagged sensor
     // the 1st flag sets start time, the second is ending time.
-    if(mySensor.getStatus()) 
-    if(finalSensor.getStatus()) 
-        switch (myFSM.getEvent())
+  if (mySensor.getStatus())
+    Serial.println("blocked");
+  if (finalSensor.getStatus())
+    Serial.println("blocked too!");
+/*
+    if (mySensor.getStatus() && !mySensor.flag)
+        mySensor.flag++;
+    if (finalSensor.getStatus() && !finalSensor.flag)
+        finalSensor.flag++;
+    if (!mySensor.getStatus() && mySensor.flag) //then if flag is up, and status is back to 0, save time
+
+        if (gait_assessment.hasBegun())
+        {
+        }
+*/
+    switch (myFSM.getEvent())
     {
     case events::back:
         print_init_page();
@@ -148,4 +166,3 @@ void TOF_stateHandler()
         break;
     }
 }
-

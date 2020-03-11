@@ -13,10 +13,11 @@ class gaitSpeedAssess
 {
 private:
     uint8_t mTestType = 5; // 3 possible types; 3mWT, 4mWT or 5mWT
+    unsigned long mStartTime;
+    //unsigned long mfinishTime;
 
 public:
-
-    int exactDistance = 500;    // Takes values from 3 to 5 meters: 300 to 500 in cm
+    int exactDistance = 500; // Takes values from 3 to 5 meters: 300 to 500 in cm
 
     gaitSpeedAssess() {} //ctor
     uint8_t getTestType()
@@ -36,9 +37,20 @@ public:
             mTestType--;
         //Serial.println(mTestType);
     }
+    void setStartTime()
+    {
+        mStartTime = millis();
+    }
+    bool hasBegun()
+    {
+        if (mStartTime)
+            return 1;
+        else
+            return 0;
+    }
+    unsigned long computeSpeed();
 };
 
 extern gaitSpeedAssess gait_assessment;
-
 
 #endif

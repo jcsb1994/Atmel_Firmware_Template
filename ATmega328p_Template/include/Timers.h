@@ -8,6 +8,8 @@
             WDT
 ##################################################*/
 
+#if WDT_CONFIG
+
 extern volatile uint8_t wdt_counter;
 
 /***************************************************************************
@@ -17,10 +19,15 @@ extern volatile uint8_t wdt_counter;
 
 void WDT_setup();
 
+#endif
+
 /*##################################################
             TIMER1
 ##################################################*/
+#if TIMER_ONE_CONFIG
 
 void timer1_setup();
+
+#endif
 
 #endif

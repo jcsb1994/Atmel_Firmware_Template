@@ -23,6 +23,7 @@ public:
   bool getStatus() {
     return tof_status;
   }
+  bool flag;
 };
 
 extern VL53L1X sensor;
@@ -30,5 +31,7 @@ extern TOF mySensor;
 
 extern VL53L1X sensor2;
 extern TOF finalSensor;
+
+void tof_setup();
 
 #endif
