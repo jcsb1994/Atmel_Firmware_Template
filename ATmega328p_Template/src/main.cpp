@@ -3,7 +3,7 @@
 input_shift_register buttons_shift;
 
 tact upPin(4);
-tact selectPin(3);
+tact selectPin(3); //should be 3
 tact downPin(5);
 tact rightPin(6);
 tact leftPin(7);
@@ -32,10 +32,12 @@ ISR(TIMER1_COMPA_vect)
 void setup()
 {
   Serial.begin(9600); //Serial.begin(38400); // Speed to comm with HC05
+  BTserial.begin(9600);
+  Serial.println("fuck you");
 
-  pinMode(ledPin, OUTPUT);
-  pinMode(LedPin2, OUTPUT);
-  pinMode(LedPin3, OUTPUT);
+  //pinMode(ledPin, OUTPUT);
+  //pinMode(LedPin2, OUTPUT);
+  //pinMode(LedPin3, OUTPUT);
 
   leftPin.setFunctions(left_r, left_h);
   upPin.setFunctions(up_r, up_h);
@@ -55,6 +57,8 @@ void setup()
 void loop()
 {
   myFSM.doState();
+
+  testBT();
 
   //shift_reg_snapshot();
   //buttons_shift.data = transfer_shift_reg_data();

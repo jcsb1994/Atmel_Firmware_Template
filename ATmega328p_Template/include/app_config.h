@@ -6,9 +6,9 @@
 * USED PINS ON THE ATMEGA328P
 ##################################################################*/
 
-#define ledPin 8
-#define LedPin2 9
-#define LedPin3 10
+//#define ledPin 8
+//#define LedPin2 9
+//#define LedPin3 10
 
 //74HC165 input shift register
 #define LOAD_CONNECTION 11

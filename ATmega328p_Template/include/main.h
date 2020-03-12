@@ -29,6 +29,7 @@
 
 #include "_tof.h"
 #include "_gaitSpeedAssess.h"
+#include "_HC05.h"
 
 
 
