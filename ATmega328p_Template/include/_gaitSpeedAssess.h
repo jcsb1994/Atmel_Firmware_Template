@@ -14,7 +14,8 @@ class gaitSpeedAssess
 private:
     uint8_t mTestType = 5; // 3 possible types; 3mWT, 4mWT or 5mWT
     unsigned long mStartTime;
-    //unsigned long mfinishTime;
+    bool mCalculatedFlag;
+    unsigned long mLastSpeed;
 
 public:
     int exactDistance = 500; // Takes values from 3 to 5 meters: 300 to 500 in cm
@@ -49,6 +50,19 @@ public:
             return 0;
     }
     unsigned long computeSpeed();
+
+    unsigned long getSpeed()
+    {
+        return mLastSpeed;
+    }
+
+    void reset()
+    {
+        //No start time, hasbegun will return false
+        mStartTime = 0;
+        //final flag reset, computespeed will work again
+        mCalculatedFlag = 0;
+    }
 };
 
 extern gaitSpeedAssess gait_assessment;

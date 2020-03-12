@@ -1,6 +1,6 @@
 #include "_tof.h"
 
-#define THRESHOLD 100
+#define THRESHOLD 300
 #define UBSTRUCTED_MAXIMUM 3
 #define CLEAR_MAXIMUM -3
 #define PATH_UBSTRUCTED 1
@@ -47,6 +47,11 @@ void TOF::debounce()
 
   (integrator) ? (maybeFlag++) : (maybeFlag = 0, lastReading = currentReading);
 }
+
+
+
+
+
 
 void TOF::init()
 {

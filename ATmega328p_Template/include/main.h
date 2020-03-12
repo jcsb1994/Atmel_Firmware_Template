@@ -27,8 +27,9 @@
     Add your application specific includes here
 ####################################################################################################*/
 
-#include "_gaitSpeedAssess.h"
 #include "_tof.h"
+#include "_gaitSpeedAssess.h"
+
 
 
 #endif // MAIN_H

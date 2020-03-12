@@ -3,9 +3,17 @@
 
 unsigned long gaitSpeedAssess::computeSpeed()
 {
-    unsigned long chrono = millis() - mStartTime;
-    mStartTime = 0;
-    return chrono;
+    if (!mCalculatedFlag)
+    {
+        unsigned long chrono = millis() - mStartTime;
+        mCalculatedFlag++;
+        mLastSpeed = chrono;
+        Serial.println();
+        Serial.println(chrono);
+        return chrono;
+    }
+    else
+        return 0;
 }
 
 gaitSpeedAssess gait_assessment;

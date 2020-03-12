@@ -72,7 +72,7 @@ enum events
     
     RFID_detected,
     back,
-    tof_detected, //maybe?
+    speed_measured, //maybe?
     RFID_left
 };
 

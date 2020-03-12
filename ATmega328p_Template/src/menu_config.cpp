@@ -25,7 +25,6 @@ void menu::printCursor()
     Pages to print
 ####################################################################################################*/
 
-
 void print_init_page()
 {
     lcd.clear();
@@ -49,7 +48,7 @@ void print_setup_page()
     lcd.print(gait_assessment.exactDistance);
     lcd.print("cm");
     lcd.setCursor(CURSOR_SIZE, SETUP_BT_PAIR_POS);
-    lcd.print("BT pairing");  
+    lcd.print("BT pairing");
 };
 
 void print_wait_for_rfid_page()
@@ -67,7 +66,15 @@ void print_rfid_detected_page()
     lcd.clear();
     //myMenu.printCursor();
     lcd.setCursor(CURSOR_SIZE + 2, 0);
-    lcd.print("Patient nearby");
-    lcd.setCursor(CURSOR_SIZE + 2, 2);
-    lcd.print("reading data...");
+    lcd.print("Patient near");
+    lcd.setCursor(CURSOR_SIZE, 1);
+    (gait_assessment.hasBegun() && (!mySensor.flag != !finalSensor.flag)) ? (lcd.print("Reading..")) : (lcd.print("         "));
+    if (gait_assessment.getSpeed())
+    {
+        lcd.setCursor(CURSOR_SIZE, 2);
+        lcd.print("ID: ");
+        lcd.setCursor(CURSOR_SIZE, 3);
+        lcd.print("measured: ");
+        lcd.print(gait_assessment.getSpeed());
+    }
 }

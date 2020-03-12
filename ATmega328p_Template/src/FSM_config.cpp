@@ -121,6 +121,7 @@ void WAIT_FOR_RFID_stateHandler()
 
     case events::RFID_detected:
         print_rfid_detected_page();
+        myMenu.setCurrentPage(print_rfid_detected_page); // Used because refreshPage() is used in this state
         myFSM.setState(TOF_stateHandler);
         break;
 
@@ -135,31 +136,53 @@ void WAIT_FOR_RFID_stateHandler()
 
 void TOF_stateHandler()
 {
-    //   if(!mySensor.flag)
     mySensor.debounce();    // Read TOF sensor
     finalSensor.debounce(); // Read 2nd
-    // If we flag, do not debounce the flagged sensor
-    // the 1st flag sets start time, the second is ending time.
-  if (mySensor.getStatus())
-    Serial.println("blocked");
-  if (finalSensor.getStatus())
-    Serial.println("blocked too!");
-/*
-    if (mySensor.getStatus() && !mySensor.flag)
-        mySensor.flag++;
-    if (finalSensor.getStatus() && !finalSensor.flag)
-        finalSensor.flag++;
-    if (!mySensor.getStatus() && mySensor.flag) //then if flag is up, and status is back to 0, save time
 
-        if (gait_assessment.hasBegun())
-        {
-        }
-*/
+    // If starting time isnt defined and 1 of the sensors are blocked
+    if (!gait_assessment.hasBegun() && (mySensor.getStatus() || finalSensor.getStatus()))
+    {
+        (mySensor.getStatus()) ? (mySensor.flag++) : (finalSensor.flag++);
+        gait_assessment.setStartTime();
+        myFSM.setEvent(events::speed_measured);
+    }
+
+    // If start time was recorded, and reading the opposite
+    else if (gait_assessment.hasBegun() && ((mySensor.getStatus() && finalSensor.flag) || (finalSensor.getStatus() && mySensor.flag)))
+    {
+        gait_assessment.computeSpeed();
+        myFSM.setEvent(speed_measured);
+        mySensor.flag++;
+        finalSensor.flag++;
+    }
+
+    else if (mySensor.flag && finalSensor.flag && !mySensor.getStatus() && !finalSensor.getStatus())
+    {
+        mySensor.flag = 0;
+        finalSensor.flag = 0;
+        gait_assessment.reset();
+    }
+
     switch (myFSM.getEvent())
     {
     case events::back:
         print_init_page();
+        mySensor.flag = 0;
+        finalSensor.flag = 0;
+        gait_assessment.reset();
         myFSM.setState(INIT_stateHandler);
+        break;
+
+    case events::select:
+        finalSensor.flag = 0;
+        mySensor.flag = 0;
+        gait_assessment.reset();
+        myMenu.refreshPage();
+        //Serial.println("reseted!");
+        break;
+
+    case events::speed_measured:
+        myMenu.refreshPage();
         break;
 
     default:
