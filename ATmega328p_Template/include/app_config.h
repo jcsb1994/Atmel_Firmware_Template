@@ -28,6 +28,8 @@
 /***************************************************************************
  * BUTTONS (TACT SWITCHES) MACROS
  ***************************************************************************/
+#define BUTTONS_CONFIG 0
+#if BUTTONS_CONFIG
 
 #define BUTTON_ACTIVE_STATE_CONFIG 1 // 1 for active HIGH buttons or 0 for active low
 
@@ -51,6 +53,14 @@
 #define DEBOUNCE_TIME 0.3
 #define SAMPLE_FREQUENCY 6
 
+
+#endif //BUTTONS_CONFIG
+
+
+/***************************************************************************
+ * Menu (class used to print pages as a user interface)
+ ***************************************************************************/
+#define MENU_CONFIG 0
 
 
 /***************************************************************************
