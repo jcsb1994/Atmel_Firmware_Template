@@ -10,6 +10,6 @@ extern SoftwareSerial BTserial; // SRX | STX
 
 void testBT();
 
-void read_BT();
+void read_BT_events();
 
 #endif
