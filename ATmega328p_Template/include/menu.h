@@ -1,7 +1,10 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "main.h"
+//#include "main.h"
+#include "app_config.h"
+#include "addons.h"
+
 
 /*
 create the menu instance
@@ -9,7 +12,7 @@ when moving cursor, call moveCursor()
 */
 
 /*####################################################################################################
-    Menu::  DO NOT EDIT
+    Menu::
 ####################################################################################################*/
 class menu
 {
@@ -17,6 +20,7 @@ class menu
 public:
     menu(int rows) : mRows(rows) {}
 
+    struct pages;
 
     void printCursor();
     
@@ -66,7 +70,7 @@ private:
 };
 
 //Menu Instance
-extern menu myMenu;
+//extern menu myMenu;
 
 
 

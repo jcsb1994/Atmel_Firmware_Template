@@ -6,7 +6,7 @@
 
 void up_r()
 {
-  myMenu.moveCursor(DOWN);
+  myFSM.getMenu()->moveCursor(DOWN);
 }
 
 void up_h()
@@ -28,7 +28,7 @@ void sel_h()
 
 void down_r()
 {
-  myMenu.moveCursor(UP);
+  myFSM.getMenu()->moveCursor(UP);
 }
 
 void down_h()

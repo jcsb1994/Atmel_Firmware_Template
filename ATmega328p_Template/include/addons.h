@@ -1,7 +1,7 @@
 #ifndef ADDONS_H
 #define ADDONS_H
 
-#include "main.h"
+#include "app_config.h"
 
 /*####################################################################################################
     EXTERNAL EEPROM

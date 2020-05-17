@@ -28,8 +28,18 @@
 /***************************************************************************
  * BUTTONS (TACT SWITCHES) MACROS
  ***************************************************************************/
-#define BUTTONS_CONFIG 0
+#define BUTTONS_CONFIG 1
 #if BUTTONS_CONFIG
+
+enum buttons_names
+{
+    enter,
+    left,
+    right,
+    TOTAL_NUMBER_OF_BUTTONS  // Do not remove and leave as last member of the enum
+};
+
+int used_tact_pins[TOTAL_NUMBER_OF_BUTTONS] = {1, 2, 3};
 
 #define BUTTON_ACTIVE_STATE_CONFIG 1 // 1 for active HIGH buttons or 0 for active low
 
@@ -61,7 +71,7 @@
  * Menu (class used to print pages as a user interface)
  ***************************************************************************/
 #define MENU_CONFIG 0
-
+#define UI_MENU_ROW_NB 4   
 
 /***************************************************************************
  * Sleep

@@ -1,7 +1,10 @@
 #ifndef FSM_H
 #define FSM_H
 
+#include "tact.h"
+#include "menu.h"
 #include "main.h"
+
 
 class FSM
 {
@@ -11,10 +14,41 @@ private:
 
     void (*do_state)();
 
-public:
-    FSM() {}
+    menu *myMenu;
+    tact *myButtons;
 
-    enum events : unsigned int;
+public:
+    FSM()
+    {
+        myMenu = new menu(UI_MENU_ROW_NB);
+        myButtons = new tact[buttons_names::TOTAL_NUMBER_OF_BUTTONS];
+        for (int i; i < TOTAL_NUMBER_OF_BUTTONS; i++)
+        {
+            myButtons[i].setPin(used_tact_pins[i]);
+        }
+    }
+
+    ~FSM()
+    {
+        delete myMenu;
+    }
+
+    struct states;
+
+    //enum events;
+    //enum events : unsigned int;
+
+    menu *getMenu()
+    {
+        return myMenu;
+    }
+
+    tact getTact(int target_tact)
+    {
+        return (myButtons[target_tact]);
+    }
+
+
 
     int getEvent() //used as output for tact switches
     {

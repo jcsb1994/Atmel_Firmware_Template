@@ -24,15 +24,17 @@ void FSM::init()
  * 
  ***************************************************************************/
 
-void INIT_stateHandler()
+struct FSM::states
+{
+    void INIT_stateHandler()
 {
     if (myFSM.getEvent() == events::select)
     {
-        switch (myMenu.getCursorPos())
+        switch (myFSM.getMenu()->getCursorPos())
         {
         case INIT_SETUP_POS:
             print_setup_page();
-            myMenu.setCurrentPage(print_setup_page); // Used because refreshPage() is used in this state
+            myFSM.getMenu()->setCurrentPage(print_setup_page); // Used because refreshPage() is used in this state
             myFSM.setState(SETUP_stateHandler);
             break;
 
@@ -58,18 +60,18 @@ void SETUP_stateHandler()
         break;
 
     case events::increment:
-        switch (myMenu.getCursorPos())
+        switch (myFSM.getMenu()->getCursorPos())
         {
         case SETUP_TEST_TYPE_POS:
 
             gait_assessment.setTestTypeUp();
             gait_assessment.exactDistance = gait_assessment.getTestType() * 100;
-            myMenu.refreshPage();
+            myFSM.getMenu()->refreshPage();
             break;
 
         case SETUP_EXACT_DISTANCE:
             gait_assessment.exactDistance++;
-            myMenu.refreshPage();
+            myFSM.getMenu()->refreshPage();
             break;
 
         default:
@@ -78,18 +80,18 @@ void SETUP_stateHandler()
         break;
 
     case events::decrement:
-        switch (myMenu.getCursorPos())
+        switch (myFSM.getMenu()->getCursorPos())
         {
         case SETUP_TEST_TYPE_POS:
 
             gait_assessment.setTestTypeDown();
             gait_assessment.exactDistance = gait_assessment.getTestType() * 100;
-            myMenu.refreshPage();
+            myFSM.getMenu()->refreshPage();
             break;
 
         case SETUP_EXACT_DISTANCE:
             gait_assessment.exactDistance--;
-            myMenu.refreshPage();
+            myFSM.getMenu()->refreshPage();
             break;
 
         default:
@@ -98,7 +100,7 @@ void SETUP_stateHandler()
         break;
 
     case events::select:
-        if (myMenu.getCursorPos() == SETUP_BT_PAIR_POS)
+        if (myFSM.getMenu()->getCursorPos() == SETUP_BT_PAIR_POS)
             //go to BT menu
             //void print_wait_for_rfid_page();
             //myFSM.setState(WAIT_FOR_RFID_stateHandler);
@@ -121,7 +123,7 @@ void WAIT_FOR_RFID_stateHandler()
 
     case events::RFID_detected:
         print_rfid_detected_page();
-        myMenu.setCurrentPage(print_rfid_detected_page); // Used because refreshPage() is used in this state
+        myFSM.getMenu()->setCurrentPage(print_rfid_detected_page); // Used because refreshPage() is used in this state
         myFSM.setState(TOF_stateHandler);
         break;
 
@@ -177,15 +179,18 @@ void TOF_stateHandler()
         finalSensor.flag = 0;
         mySensor.flag = 0;
         gait_assessment.reset();
-        myMenu.refreshPage();
+        myFSM.getMenu()->refreshPage();
         //Serial.println("reseted!");
         break;
 
     case events::speed_measured:
-        myMenu.refreshPage();
+        myFSM.getMenu()->refreshPage();
         break;
 
     default:
         break;
     }
 }
+
+};
+

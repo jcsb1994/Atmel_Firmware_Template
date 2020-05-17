@@ -64,7 +64,9 @@ void print_rfid_detected_page();
 /*####################################################################################################
     State Machine (FSM) events (list all possible events here, STARTING WITH = 1)
 ####################################################################################################*/
-enum events
+
+
+enum FSM::events
 {
     select = 1,
     increment,

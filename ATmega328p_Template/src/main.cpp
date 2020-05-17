@@ -31,6 +31,7 @@ ISR(TIMER1_COMPA_vect)
 
 void setup()
 {
+
   Serial.begin(9600); //Serial.begin(38400); // Speed to comm with HC05
   BTserial.begin(9600);
   Serial.println("fuck you");
@@ -62,6 +63,8 @@ void loop()
 
   //shift_reg_snapshot();
   //buttons_shift.data = transfer_shift_reg_data();
+
+  myFSM.getTact(enter).poll(NOT_DEBOUNCED);
 
   selectPin.poll(NOT_DEBOUNCED);
   downPin.poll(NOT_DEBOUNCED);

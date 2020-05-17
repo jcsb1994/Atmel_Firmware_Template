@@ -12,8 +12,7 @@
 
 // Classes for embedded projects
 #include "74HC165.h"
-#include "tact.h"
-#include "menu.h"
+
 #include "FSM.h"
 
 #include "functions_config.h"  //Includes application's custom functions for FSM, menu and tact

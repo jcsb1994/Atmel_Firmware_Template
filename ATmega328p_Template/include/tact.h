@@ -1,7 +1,8 @@
 #ifndef TACT_H
 #define TACT_H
 
-#include "main.h"
+#include "app_config.h"
+#include <Arduino.h>
 
 /*##################################################
             MACROS
@@ -10,7 +11,7 @@
 // Debounce macros
 #define DEBOUNCED 1
 #define NOT_DEBOUNCED 0
-#define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY)                            //debounce algorith max samples
+#define MAXIMUM (DEBOUNCE_TIME * SAMPLE_FREQUENCY) //debounce algorith max samples
 // Polling macros
 #define SHORT_EFFECT_REQUIRED 1
 #define RELEASE_EFFECT_REQUIRED 2
@@ -31,34 +32,40 @@ struct input_shift_register
 class tact
 {
 public:
+    tact();
     tact(int assigned_pin);                              // Constructor
     tact(int assigned_pin, input_shift_register &shift); // Overloaded constructor for tacts linked to a shift register chip
+    ~tact();
 
     void debounce();
     void poll(bool debounce_flag);
     static int *pressOutput;
 
+    void setPin(int assigned_pin)
+    {
+        pin = assigned_pin;
+    }
 
     void activate();
     void setFunctions(
 #if SHORT_BUTTON_PRESS_CONFIG
         void short_press_function(void)
 #if BUTTON_RELEASE_CONFIG || LONG_BUTTON_PRESS_CONFIG
-        ,
+            ,
 #endif
 #endif
 
 #if BUTTON_RELEASE_CONFIG
         void release_press_function(void)
 #if LONG_BUTTON_PRESS_CONFIG
-        ,
+            ,
 #endif
 #endif
 
 #if LONG_BUTTON_PRESS_CONFIG
         void long_press_function(void)
 #endif
-        );
+    );
 
 #if LONG_BUTTON_PRESS_CONFIG
 #if SIMULTANEOUS_BUTTON_PRESSES_CONFIG
